@@ -25,7 +25,7 @@ function usePostData() {
 function useDeleteData() {
     return useMutation({
         mutationFn: (api) => {
-            return Instance.delete(api).then(res => console.log(res))
+            return Instance.delete(api).then(res => res.data)
         }
     })
 }
