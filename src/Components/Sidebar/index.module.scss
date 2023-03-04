@@ -1,0 +1,16 @@
+.sidebar {
+    width: inherit;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    padding: 20px;
+
+
+
+    ul {
+        display: flex;
+        flex-direction: column;
+        row-gap: 12px;
+    }
+}
