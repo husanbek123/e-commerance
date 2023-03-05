@@ -9,7 +9,10 @@ function ControlPage() {
     let {data} = useGetData(['categories'], '/category', {})
     let Post = usePostData()
     
-    console.log(data);
+    // console.log(data);
+
+    // controlda man shunchaki post request ni test qivotudim
+    // bu yerga tegmasezam mayli
 
     function Submit(e) {
         e.preventDefault()
