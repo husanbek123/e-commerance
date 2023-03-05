@@ -1,0 +1,47 @@
+
+.closeArea {
+    position: fixed;
+    width: 100%;
+    min-height: 100%;
+    z-index: 90;
+    background-color: rgba(45, 45, 45, 0.333);
+    left: 0;
+    top: 0;
+    cursor: pointer;
+}
+
+
+.modal {
+    position: fixed;
+    top: 15%;
+    right: 15%;
+    left: 15%;
+    bottom: 15%;
+    z-index: 91;
+    background-color: white;
+    border-radius: 8px;
+    min-height: 70%;
+    overflow: scroll;
+    scroll-behavior: smooth;
+    padding: 20px;
+
+    &::-webkit-scrollbar {
+        width: 0px;
+    }
+
+
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        row-gap: 20px;
+
+        .select {
+            width: 100%;
+        }
+
+        textarea {
+            min-height: 80px;
+        }
+    }
+}

@@ -6,6 +6,8 @@ import AllUsers from './Pages/Users';
 import Products from './Pages/Products';
 import Categories from './Pages/Categories';
 import BestSellings from './Pages/BestSellings';
+import Modal_Outlet from './Pages/Modal_Outlet';
+import ControlPage from './Pages/Control';
 
 function App() {
   return (
@@ -14,9 +16,12 @@ function App() {
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/users' element={<AllUsers />} />
-          <Route path='/products' element={<Products />} />
+          <Route path='/products' element={<Products />} >
+            <Route path=':action' element={<Modal_Outlet />} />
+          </Route>
           <Route path='/categories' element={<Categories />} />
           <Route path='/best-sellings' element={<BestSellings />} />
+          <Route path='/control-panel' element={<ControlPage />} />
         </Routes>
       </Layout>
     </div>
