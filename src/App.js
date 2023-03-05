@@ -1,13 +1,13 @@
-import Layout from './Components/Layout';
-import { Route, Routes } from 'react-router-dom';
-import './App.scss';
-import Home from './Pages/Home';
-import AllUsers from './Pages/Users';
-import Products from './Pages/Products';
-import Categories from './Pages/Categories';
-import BestSellings from './Pages/BestSellings';
-import Modal_Outlet from './Pages/Modal_Outlet';
-import ControlPage from './Pages/Control';
+import Layout from "./Components/Layout";
+import { Route, Routes } from "react-router-dom";
+import "./App.scss";
+import Home from "./Pages/Home";
+import AllUsers from "./Pages/Users";
+import Products from "./Pages/Products";
+import Categories from "./Pages/Categories";
+import BestSellings from "./Pages/BestSellings";
+import Modal_Outlet from "./Pages/Modal_Outlet";
+import ControlPage from "./Pages/Control";
 
 function App() {
   return (
