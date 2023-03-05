@@ -14,27 +14,29 @@ function useGetData(keys, api, options) {
     })
 }
 
-function usePostData() {
+function usePostData(api) {
     return useMutation({
-        mutationFn: async (api, data) => {
+        mutationFn: async (data) => {
             const res = await Instance.post(api, data);
             return res.data;
         }
     })
 }
 
-function useDeleteData() {
-    return useMutation({
-        mutationFn: (api) => {
-            return Instance.delete(api).then(res => res.data)
-        }
-    })
+function useDeleteData(api) {
+    return useMutation((id) => Instance.delete(api+id))
+
+    // return useMutation({
+    //     mutationFn: (id) => {
+    //         return Instance.delete(api+id).then(res => res.data)
+    //     }
+    // })
 }
 
-function useUpdateData() {
+function useUpdateData(api) {
     return useMutation({
-        mutationFn: (api, data) => {
-            return Instance.patch(api, data).then(res => res.data)
+        mutationFn: (id, data) => {
+            return Instance.patch(api+id, data).then(res => res.data)
         }
     })
 }
