@@ -16,8 +16,9 @@ function useGetData(keys, api, options) {
 
 function usePostData() {
     return useMutation({
-        mutationFn: (api) => {
-            return Instance.post(api).then(res => res.data)
+        mutationFn: async (api, data) => {
+            const res = await Instance.post(api, data);
+            return res.data;
         }
     })
 }
