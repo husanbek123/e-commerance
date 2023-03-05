@@ -14,14 +14,17 @@ function App() {
     <div className="App">
       <Layout>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/users" element={<AllUsers />} />
-          <Route path="/products" element={<Products />}>
-            <Route path=":action" element={<Modal_Outlet />} />
+          <Route path='/' element={<Home />} />
+          <Route path='/users' element={<AllUsers />} />
+          <Route path='/products' element={<Products />} >
+            <Route path=':action' element={<Modal_Outlet type="products" />} />
           </Route>
-          <Route path="/categories" element={<Categories />} />
-          <Route path="/best-sellings" element={<BestSellings />} />
-          <Route path="/control-panel" element={<ControlPage />} />
+          <Route path='/categories' element={<Categories />} >
+            <Route path=':action' element={<Modal_Outlet type="category" />} />
+          </Route>
+          <Route path='/best-sellings' element={<BestSellings />} >
+          </Route>
+          <Route path='/control-panel' element={<ControlPage />} />
         </Routes>
       </Layout>
     </div>
