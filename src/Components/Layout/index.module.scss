@@ -1,17 +1,16 @@
-
 .layout {
-    display: flex;
-    min-height: 100vh;    
+  display: flex;
+  min-height: 100vh;
 }
 
 .left_side {
-    background-color: antiquewhite;
-    width: 20vw;
-    height: 100vh;
-    position: relative;
+  background-color: antiquewhite;
+  width: 20vw;
+  height: 100vh;
+  position: relative;
 }
 
 .right_side {
-    padding: 20px 30px; 
-    width: 80vw;
+  padding: 20px 30px;
+  width: 80vw;
 }
