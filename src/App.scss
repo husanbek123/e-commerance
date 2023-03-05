@@ -9,11 +9,21 @@
     text-decoration: none;
     list-style: none;
   }
+
+  button {
+    cursor: pointer;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  ::-webkit-scrollbar {
+    width: 0px;
+  }
 }
 
 .active {
   color: red;
-  
 }
 
 .row {

@@ -2,15 +2,16 @@ import { Button } from 'antd';
 import React from 'react'
 import { Outlet, useNavigate } from 'react-router-dom';
 import useGetData from '../../Api/Queries'
+import MyTable from '../../Components/Table';
 import styles from './index.module.scss'
 
 
 function Products() {
 
-  let {data} = useGetData(["users"], "/products")
-  console.log(data);
-
   let navigate = useNavigate()
+
+  let {data} = useGetData(["all_products"], "/products")
+  console.log(data);
 
   return (
     <div className={styles.products}>
@@ -19,7 +20,10 @@ function Products() {
 
         <Button type='primary' onClick={() => navigate('product_add')}>Add Product</Button>
       </header>
+      <br />
       <Outlet />
+
+      <MyTable data={data?.data} />
     </div>
   )
 }
