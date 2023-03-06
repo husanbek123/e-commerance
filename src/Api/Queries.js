@@ -1,18 +1,18 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
-import axios from "axios";
+// import axios from "axios";
 import Instance from "../Utils/Instance";
 
-
 function useGetData(keys, api, options) {
-    return useQuery({
-        queryKey: keys,
-        queryFn: async () => {
-            const data = await Instance.get(api);
-            return data.data;
-        },
-        options
-    })
+  return useQuery({
+    queryKey: keys,
+    queryFn: async () => {
+      const data = await Instance.get(api);
+      return data.data;
+    },
+    options,
+  });
 }
+
 
 function usePostData(api) {
     return useMutation({
@@ -39,8 +39,8 @@ function useUpdateData(api) {
             return Instance.patch(api+id, data).then(res => res.data)
         }
     })
+
 }
 
-
-export { usePostData , useDeleteData, useUpdateData }
-export default useGetData
+export { usePostData, useDeleteData, useUpdateData };
+export default useGetData;
