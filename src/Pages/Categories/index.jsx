@@ -20,7 +20,7 @@ function Categories() {
       <br />
       <Outlet />
 
-      <MyTable data={data?.data} />
+      <MyTable data={data?.data} type="category" />
     </div>
   );
 }

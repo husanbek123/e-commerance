@@ -22,7 +22,7 @@ function Products() {
       </header>
       <br />
       <Outlet />
-      <MyTable data={data?.data} />
+      <MyTable data={data?.data} type="products" />
     </div>
   );
 }

@@ -1,0 +1,16 @@
+.form {
+  display: flex;
+  gap: 50px;
+  padding: 40px;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+
+  &__li {
+    font-size: 22px;
+    font-weight: 600;
+  }
+}
