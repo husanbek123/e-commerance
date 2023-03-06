@@ -23,7 +23,10 @@ function App() {
             <Route path=":action" element={<Modal_Outlet type="category" />} />
           </Route>
           <Route path="/best-sellings" element={<BestSellings />}></Route>
-          <Route path="/control-panel" element={<ControlPage />} />
+          <Route path="/control-panel" element={<ControlPage />}>
+            <Route path=":edit" element={<Modal_Outlet type="edit" />} />
+            <Route path=":updete" element={<Modal_Outlet type="updete" />} />
+          </Route>
         </Routes>
       </Layout>
     </div>
