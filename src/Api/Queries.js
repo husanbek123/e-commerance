@@ -13,33 +13,31 @@ function useGetData(keys, api, options) {
   });
 }
 
-
 function usePostData(api) {
-    return useMutation({
-        mutationFn: async (data) => {
-            const res = await Instance.post(api, data);
-            return res.data;
-        }
-    })
+  return useMutation({
+    mutationFn: async (data) => {
+      const res = await Instance.post(api, data);
+      return res.data;
+    },
+  });
 }
 
 function useDeleteData(api) {
-    return useMutation((id) => Instance.delete(api+id))
+  return useMutation((id) => Instance.delete(api + id));
 
-    // return useMutation({
-    //     mutationFn: (id) => {
-    //         return Instance.delete(api+id).then(res => res.data)
-    //     }
-    // })
+  // return useMutation({
+  //     mutationFn: (id) => {
+  //         return Instance.delete(api+id).then(res => res.data)
+  //     }
+  // })
 }
 
 function useUpdateData(api) {
-    return useMutation({
-        mutationFn: (id, data) => {
-            return Instance.patch(api+id, data).then(res => res.data)
-        }
-    })
-
+  return useMutation({
+    mutationFn: (data) => {
+      return Instance.patch(api, data).then((res) => res.data);
+    },
+  });
 }
 
 export { usePostData, useDeleteData, useUpdateData };

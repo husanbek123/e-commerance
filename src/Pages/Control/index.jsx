@@ -26,8 +26,6 @@ function ControlPage() {
     "/information/4c5161df-130a-40cf-a044-0b83589740d9"
   );
 
-  console.log(data);
-
   const OnSubmit = (e) => {
     const data = { ...e };
     InfoData.mutate(
@@ -42,6 +40,23 @@ function ControlPage() {
     );
 
     console.log(data.email);
+  };
+
+  const Updata = useUpdateData(
+    "/information/4c5161df-130a-40cf-a044-0b83589740d9"
+  );
+
+  const OnUpdate = () => {
+    Updata.mutate(
+      {
+        phone: [data.phone1],
+        ...data,
+      },
+      {
+        onSuccess: (data) => console.log(data, "data"),
+        onError: (eror) => console.log(eror, "errr"),
+      }
+    );
   };
 
   return (
@@ -71,7 +86,7 @@ function ControlPage() {
         onCancel={handleCancel}
         width={1200}
       >
-        <Form onFinish={(e) => OnSubmit(e)} className={cl.form}>
+        <Form onFinish={(e) => OnUpdate(e)} className={cl.form}>
           <div>
             <Form.Item label="Tel" name="phone1">
               <Input placeholder="Tel raqam kirting"></Input>
