@@ -19,7 +19,6 @@ function Categories() {
       </header>
       <br />
       <Outlet />
-
       <MyTable data={data?.data}  type="categories" />
     </div>
   );
