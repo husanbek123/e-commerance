@@ -1,6 +1,7 @@
 import React from "react";
 import { Table } from "antd";
 import useGetData, { useDeleteData, useUpdateData } from "../../Api/Queries";
+import { useNavigate } from "react-router-dom";
 
 
 function MyTable({ data, type }) {
@@ -9,7 +10,7 @@ function MyTable({ data, type }) {
   let Up = useUpdateData("/products");
 
 
-  // console.log(products, "vhf,dsbjkn.alm");
+  let navigate = useNavigate();
 
   function Delete(id) {
     console.log(id);
@@ -18,9 +19,10 @@ function MyTable({ data, type }) {
 
   function Update(id) {
     console.log(id);
-    Up.mutate(`/${id}`, {
-      active: false,
-    });
+    navigate(id)
+    // Up.mutate(`/${id}`, {
+    //   active: false,
+    // });
   }
 
 
@@ -83,7 +85,6 @@ function MyTable({ data, type }) {
       },
     ];
     data?.map((item, index) => {
-      console.log(item);
       myData.push({
         ...item,
         name: item?.name_Uz,
@@ -125,14 +126,12 @@ function MyTable({ data, type }) {
       },
     ];
     data?.map((item, index) => {
-      console.log(item);
       myData.push({
         ...item,
         name: item?.name_Uz,
         key: index + 1,
         description: (
           <h5>
-            <br />
             <p>Category-id: {item?.id}</p>
           </h5>
         ),
@@ -149,7 +148,6 @@ function MyTable({ data, type }) {
     });
   }
 
-
   return (
     <div>
       <Table
@@ -157,13 +155,14 @@ function MyTable({ data, type }) {
         columns={columns}
         expandable={{
           expandedRowRender: (record) => (
-            <p
-              style={{
-                margin: 0,
-              }}
-            >
-              {record.description}
-            </p>
+            // <p
+            //   style={{
+            //     margin: 0,
+            //   }}
+            // >
+            //   {record.description}
+            // </p>
+            record.description
           ),
           rowExpandable: (record) => record.name !== "Not Expandable",
         }}
