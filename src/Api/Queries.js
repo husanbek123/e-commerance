@@ -24,12 +24,6 @@ function usePostData(api) {
 
 function useDeleteData(api) {
   return useMutation((id) => Instance.delete(api + id));
-
-  // return useMutation({
-  //     mutationFn: (id) => {
-  //         return Instance.delete(api+id).then(res => res.data)
-  //     }
-  // })
 }
 
 function useUpdateData(api) {
