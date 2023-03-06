@@ -1,9 +1,14 @@
+
 import axios from 'axios'
 import React, { useState } from 'react'
 import useGetData, { useDeleteData, usePostData} from '../../Api/Queries'
 import styles from './index.module.scss'
 
+
 function Home() {
+  // console.log(useGetData(["users"], "https://jsonplaceholder.typicode.com/users").data);
+  let D = useDeleteData();
+
 
   let [image, setImage] = useState(null)
   let [url, setUrl] = useState(null) 
@@ -43,7 +48,10 @@ function Home() {
       {
         image && <img src={image} alt="" height={"200px"} width={"200px"} />
       }
+
     </div>
-  )
+  );
 }
+
 export default Home
+
