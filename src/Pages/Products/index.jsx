@@ -15,16 +15,12 @@ function Products() {
     <div className={styles.products}>
       <header className="row">
         <h3>All Products</h3>
-
-        <Button type="primary" onClick={() => navigate("product_add")}>
-          Add Product
-        </Button>
+        <Button type='primary' onClick={() => navigate('add')}>Add Product</Button>
       </header>
       <br />
       <Outlet />
-      <MyTable data={data?.data} />
+      <MyTable data={data?.data} type="products" />
     </div>
   );
 }
-
 export default Products;

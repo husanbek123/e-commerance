@@ -18,8 +18,7 @@ function Modal_Outlet({type}) {
 
   let {data: categories} = useGetData(["categories"], "/category")
   let Post = usePostData(`/${type}`)
-  let Delete = useDeleteData("/category")
-
+  // let Delete = useDeleteData("/category")
 
   function Change(e) {
     let file = e.file
@@ -28,13 +27,16 @@ function Modal_Outlet({type}) {
   }
 
   function Submit(values) {
+    // Delete.mutate('/2445d4ab-4745-49ea-89d3-e9e831e6b18a', {
+    //   onSuccess: () => console.log("success"),
+    // })
 
-    Delete.mutate('/2445d4ab-4745-49ea-89d3-e9e831e6b18a', {
-      onSuccess: () => console.log("success"),
-    })
+    if(type == "products") {
+      // if() 
+    }
 
     // Post.mutate({
-    //   "id": "asd",
+    //   "id": "",
     //   "gender": "BOTH",
     //   "color": "red",
     //   "active": true,
@@ -60,20 +62,21 @@ function Modal_Outlet({type}) {
       <div className={styles.closeArea} onClick={() => navigate(-1)}></div>
       <div className={styles.modal}> 
         <Form onFinish={Submit}>
-          <Form.Item className={styles.input} name='name_Uz' ><Input placeholder="Enter product's title in uzbek" /></Form.Item>
-          <Form.Item className={styles.input} name='name_Ru' ><Input placeholder="Enter product's title in russian" /></Form.Item>
-          <Form.Item className={styles.input} name='name_En' ><Input placeholder="Enter product's title in english" /></Form.Item>
-          <Form.Item className={styles.input} name='price' ><Input placeholder="Enter product's price" /></Form.Item>
-          <Form.Item className={styles.textarea} name='description_Uz' ><TextArea  placeholder="Enter product's description in uzbek" /></Form.Item>
-          <Form.Item className={styles.textarea} name='description_Ru' ><TextArea  placeholder="Enter product's description in russian" /></Form.Item>
-          <Form.Item className={styles.textarea} name='description_En' ><TextArea  placeholder="Enter product's description in english" /></Form.Item>
+          <Form.Item  className={styles.input} name='name_Uz' ><Input required placeholder="Enter product's title in uzbek" /></Form.Item>
+          <Form.Item  className={styles.input} name='name_Ru' ><Input required placeholder="Enter product's title in russian" /></Form.Item>
+          <Form.Item  className={styles.input} name='name_En' ><Input required placeholder="Enter product's title in english" /></Form.Item>
+          <Form.Item  className={styles.input} name='price' ><Input required placeholder="Enter product's price" /></Form.Item>
+          <Form.Item  className={styles.textarea} name='description_Uz' ><TextArea required placeholder="Enter product's description in uzbek" /></Form.Item>
+          <Form.Item  className={styles.textarea} name='description_Ru' ><TextArea required placeholder="Enter product's description in russian" /></Form.Item>
+          <Form.Item  className={styles.textarea} name='description_En' ><TextArea required placeholder="Enter product's description in english" /></Form.Item>
           
           <Form.Item 
             name="category"
-            required
             className={styles.select}
+            required
           >
             <Select  
+            
               showSearch
               className={styles.select}
               placeholder="Choose category"
@@ -89,8 +92,7 @@ function Modal_Outlet({type}) {
             />
           </Form.Item>
           {/* <MyUpload onChange={Change} /> */}
-          <Form.Item className={styles.textarea} name="image_url"><Input placeholder='url for image' /></Form.Item>
-          <img src={image} />
+          <Form.Item required className={styles.textarea} name="image_url"><Input placeholder='url for image' /></Form.Item>
           <Button htmlType='submit' type='primary'>{action.split("_").reverse().join(" ").charAt().toUpperCase() + action.split("_").reverse().join(" ").slice(1)}</Button>
         </Form>
       </div>

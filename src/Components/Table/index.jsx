@@ -2,10 +2,12 @@ import React from "react";
 import { Table } from "antd";
 import useGetData, { useDeleteData, useUpdateData } from "../../Api/Queries";
 
+
 function MyTable({ data, type }) {
   let { data: products } = useGetData(["products"], "/products");
   let Del = useDeleteData("/products");
   let Up = useUpdateData("/products");
+
 
   // console.log(products, "vhf,dsbjkn.alm");
 
@@ -21,7 +23,6 @@ function MyTable({ data, type }) {
     });
   }
 
-  // console.log(products?.data?.length);
 
   let columns = [
     {
@@ -147,6 +148,7 @@ function MyTable({ data, type }) {
       });
     });
   }
+
 
   return (
     <div>
