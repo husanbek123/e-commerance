@@ -20,19 +20,26 @@ function ControlPage() {
     setIsModalOpen(false);
   };
 
-  const InfoData = usePostData("/information");
+  // const InfoData = usePostData("/information");
   const { data } = useGetData(
     ["information"],
     "/information/4c5161df-130a-40cf-a044-0b83589740d9"
   );
 
-  console.log(data);
+  const Updata = useUpdateData(
+    "/information/4c5161df-130a-40cf-a044-0b83589740d9"
+  );
 
-  const OnSubmit = (e) => {
-    const data = { ...e };
-    InfoData.mutate(
+  const OnUpdate = (datavalues) => {
+    let data = {
+      ...datavalues,
+      phone: [datavalues.phone1],
+    };
+
+    delete data.phone1;
+
+    Updata.mutate(
       {
-        phone: [data.phone1],
         ...data,
       },
       {
@@ -40,9 +47,11 @@ function ControlPage() {
         onError: (eror) => console.log(eror, "errr"),
       }
     );
-
-    console.log(data.email);
   };
+
+  const date = new Date().toDateString(data?.createdAt);
+
+  console.log(date);
 
   return (
     <>
@@ -60,8 +69,14 @@ function ControlPage() {
             <li className={cl.wrapper__li}> Address: {data?.address}</li>
             <li className={cl.wrapper__li}> Instagram: {data?.instagram}</li>
             <li className={cl.wrapper__li}>Telegram: {data?.telegram}</li>
+            <li className={cl.wrapper__li}>Tel: {data?.phone}</li>
           </div>
-          <iframe src={data?.addressMap} width={500} height={500} />
+          <iframe
+            src={data?.addressMap}
+            className={cl.wrapper__box}
+            width={500}
+            height={500}
+          />
         </ul>
       </div>
       <Modal
@@ -71,28 +86,47 @@ function ControlPage() {
         onCancel={handleCancel}
         width={1200}
       >
-        <Form onFinish={(e) => OnSubmit(e)} className={cl.form}>
+        <Form onFinish={(e) => OnUpdate(e)} className={cl.form}>
           <div>
-            <Form.Item label="Tel" name="phone1">
+            <Form.Item initialValue={data?.phone} label="Tel" name="phone1">
               <Input placeholder="Tel raqam kirting"></Input>
             </Form.Item>
           </div>
           <div>
-            <Form.Item label="Email" name="email">
+            <Form.Item initialValue={data?.email} label="Email" name="email">
               <Input placeholder="Email kirting"></Input>
             </Form.Item>
-            <Form.Item label="Instagram" name="instagram">
+
+            <Form.Item
+              initialValue={data?.instagram}
+              label="Instagram"
+              name="instagram"
+            >
               <Input placeholder="Instagram raqam kirting"></Input>
             </Form.Item>
-            <Form.Item label="Telegram" name="telegram">
+
+            <Form.Item
+              initialValue={data?.telegram}
+              label="Telegram"
+              name="telegram"
+            >
               <Input placeholder="Telegram raqam kirting"></Input>
             </Form.Item>
           </div>
           <div>
-            <Form.Item label="addressMap" name="addressMap">
+            <Form.Item
+              initialValue={data?.addressMap}
+              label="addressMap"
+              name="addressMap"
+            >
               <Input placeholder="addressMap kirting"></Input>
             </Form.Item>
-            <Form.Item label="address" name="address">
+
+            <Form.Item
+              initialValue={data?.email}
+              label="address"
+              name="address"
+            >
               <Input placeholder="address kirting"></Input>
             </Form.Item>
           </div>
@@ -101,7 +135,7 @@ function ControlPage() {
           </Button>
         </Form>
       </Modal>
-      <p>{data.createdAt}</p>
+      <p className={cl.data}>{date}</p>
     </>
   );
 }

@@ -13,4 +13,13 @@
     font-size: 22px;
     font-weight: 600;
   }
+
+  &__box {
+    border: none;
+    border-radius: 12px;
+  }
+}
+
+.data {
+  user-select: none;
 }
