@@ -82,6 +82,7 @@ function ControlPage() {
               initialValue={data?.data[0]?.phone}
               label="Tel"
               name="phone1"
+              required
             >
               <Input placeholder="Tel raqam kirting"></Input>
             </Form.Item>
@@ -91,6 +92,7 @@ function ControlPage() {
               initialValue={data?.data[0]?.email}
               label="Email"
               name="email"
+              required
             >
               <Input placeholder="Email kirting"></Input>
             </Form.Item>
@@ -99,6 +101,7 @@ function ControlPage() {
               initialValue={data?.data[0]?.instagram}
               label="Instagram"
               name="instagram"
+              required
             >
               <Input placeholder="Instagram raqam kirting"></Input>
             </Form.Item>
@@ -107,6 +110,7 @@ function ControlPage() {
               initialValue={data?.data[0]?.telegram}
               label="Telegram"
               name="telegram"
+              required
             >
               <Input placeholder="Telegram raqam kirting"></Input>
             </Form.Item>
@@ -116,6 +120,7 @@ function ControlPage() {
               initialValue={data?.data[0]?.addressMap}
               label="addressMap"
               name="addressMap"
+              required
             >
               <Input placeholder="addressMap kirting"></Input>
             </Form.Item>
@@ -124,6 +129,7 @@ function ControlPage() {
               initialValue={data?.data[0]?.address}
               label="address"
               name="address"
+              required
             >
               <Input placeholder="address kirting"></Input>
             </Form.Item>
