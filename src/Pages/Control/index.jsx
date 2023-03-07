@@ -1,12 +1,8 @@
-import axios from "axios";
 import React, { useState } from "react";
-import useGetData, {
-  useDeleteData,
-  usePostData,
-  useUpdateData,
-} from "../../Api/Queries";
+import useGetData, { useUpdateData } from "../../Api/Queries";
 import { Button, Form, Input, Modal } from "antd";
 import cl from "./stayle.module.scss";
+import parse from "html-react-parser";
 
 function ControlPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -20,15 +16,11 @@ function ControlPage() {
     setIsModalOpen(false);
   };
 
-  // const InfoData = usePostData("/information");
-  const { data } = useGetData(
-    ["information"],
-    "/information/4c5161df-130a-40cf-a044-0b83589740d9"
-  );
+  const { data } = useGetData(["information"], "/information/");
 
-  const Updata = useUpdateData(
-    "/information/4c5161df-130a-40cf-a044-0b83589740d9"
-  );
+  const id = data?.data[0]?.id;
+
+  const Updata = useUpdateData(`/information/${id}`);
 
   const OnUpdate = (datavalues) => {
     let data = {
@@ -51,8 +43,6 @@ function ControlPage() {
 
   const date = new Date().toDateString(data?.createdAt);
 
-  console.log(date);
-
   return (
     <>
       <div className="row">
@@ -63,21 +53,21 @@ function ControlPage() {
       </div>
       <div>
         <br />
-        <ul className="row">
-          <div className={cl.wrapper}>
-            <li className={cl.wrapper__li}> Email: {data?.email}</li>
-            <li className={cl.wrapper__li}> Address: {data?.address}</li>
-            <li className={cl.wrapper__li}> Instagram: {data?.instagram}</li>
-            <li className={cl.wrapper__li}>Telegram: {data?.telegram}</li>
-            <li className={cl.wrapper__li}>Tel: {data?.phone}</li>
-          </div>
-          <iframe
-            src={data?.addressMap}
-            className={cl.wrapper__box}
-            width={500}
-            height={500}
-          />
-        </ul>
+        {data?.data?.map((e) => (
+          <ul key={e.id} className="row">
+            <div className={cl.wrapper}>
+              <li className={cl.wrapper__li}> Email:{e?.email}</li>
+              <li className={cl.wrapper__li}> Address:{e?.address}</li>
+              <li className={cl.wrapper__li}> Instagram:{e?.instagram}</li>
+              <li className={cl.wrapper__li}>Telegram:{e?.telegram}</li>
+              <li className={cl.wrapper__li}>Tel:{e?.phone}</li>
+            </div>
+            <div
+              className={cl.wrapper__map}
+              dangerouslySetInnerHTML={{ __html: data?.data[0]?.addressMap }}
+            ></div>
+          </ul>
+        ))}
       </div>
       <Modal
         title="Basic Modal"
@@ -88,17 +78,25 @@ function ControlPage() {
       >
         <Form onFinish={(e) => OnUpdate(e)} className={cl.form}>
           <div>
-            <Form.Item initialValue={data?.phone} label="Tel" name="phone1">
+            <Form.Item
+              initialValue={data?.data[0]?.phone}
+              label="Tel"
+              name="phone1"
+            >
               <Input placeholder="Tel raqam kirting"></Input>
             </Form.Item>
           </div>
           <div>
-            <Form.Item initialValue={data?.email} label="Email" name="email">
+            <Form.Item
+              initialValue={data?.data[0]?.email}
+              label="Email"
+              name="email"
+            >
               <Input placeholder="Email kirting"></Input>
             </Form.Item>
 
             <Form.Item
-              initialValue={data?.instagram}
+              initialValue={data?.data[0]?.instagram}
               label="Instagram"
               name="instagram"
             >
@@ -106,7 +104,7 @@ function ControlPage() {
             </Form.Item>
 
             <Form.Item
-              initialValue={data?.telegram}
+              initialValue={data?.data[0]?.telegram}
               label="Telegram"
               name="telegram"
             >
@@ -115,7 +113,7 @@ function ControlPage() {
           </div>
           <div>
             <Form.Item
-              initialValue={data?.addressMap}
+              initialValue={data?.data[0]?.addressMap}
               label="addressMap"
               name="addressMap"
             >
@@ -123,7 +121,7 @@ function ControlPage() {
             </Form.Item>
 
             <Form.Item
-              initialValue={data?.email}
+              initialValue={data?.data[0]?.address}
               label="address"
               name="address"
             >
