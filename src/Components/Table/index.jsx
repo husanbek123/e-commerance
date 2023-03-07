@@ -2,19 +2,36 @@ import React from "react";
 import { Table } from "antd";
 import useGetData, { useDeleteData, useUpdateData } from "../../Api/Queries";
 import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 
 
 function MyTable({ data, type }) {
-  let { data: products } = useGetData(["products"], "/products");
-  let Del = useDeleteData("/products");
+  let { data: products } = useGetData(["all_products"], "/products");
+  let Del = useDeleteData();
   let Up = useUpdateData("/products");
 
 
+  let queryClient = useQueryClient()  
   let navigate = useNavigate();
 
   function Delete(id) {
     console.log(id);
-    Del.mutate(`/${id}`);
+    Del.mutate(`products/${id}`, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({queryKey: ["all_products"]})
+        navigate("/products")
+      }
+
+    });
+    if(Del.isLoading) {
+      console.log("Loading");
+    } 
+    if(Del.isSuccess) {
+      console.log("Successfully deleted");
+    }
+    else {
+      console.log("Something went wrong");
+    }
   }
 
   function Update(id) {
