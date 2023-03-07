@@ -8,7 +8,7 @@ import styles from "./index.module.scss";
 function Products() {
   let navigate = useNavigate();
 
-  let { data } = useGetData(["all_products"], "/products");
+  let { data } = useGetData(["all_products"], "/products?take=1000");
   console.log(data);
 
   return (

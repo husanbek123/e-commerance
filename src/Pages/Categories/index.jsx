@@ -13,13 +13,13 @@ function Categories() {
     <div className={styles.categories}>
       <header className="row">
         <h3>All Categories shu yerda boladi</h3>
-        <Button onClick={() => navigate("/")} type="primary">
+        <Button onClick={() => navigate("add")} type="primary">
           Add new Category
         </Button>
       </header>
       <br />
       <Outlet />
-      <MyTable data={data?.data}  type="categories" />
+      <MyTable data={data?.data}  type="category" />
     </div>
   );
 }

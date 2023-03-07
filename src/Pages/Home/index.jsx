@@ -3,18 +3,21 @@ import axios from 'axios'
 import React, { useState } from 'react'
 import useGetData, { useDeleteData, usePostData} from '../../Api/Queries'
 import styles from './index.module.scss'
-
+import useMyStore from '../../Context'
 
 function Home() {
-  // console.log(useGetData(["users"], "https://jsonplaceholder.typicode.com/users").data);
+  let {data} = useGetData(["users"], "/products")
   let D = useDeleteData();
 
+  let {currentLang, setCurrentLang} = useMyStore((state) => state) 
+  console.log(data, currentLang);
 
   let [image, setImage] = useState(null)
   let [url, setUrl] = useState(null) 
 
-  function Submit() {
 
+  function Submit() {
+    setCurrentLang("En")
   }
   
   function Nimadir() {
@@ -45,8 +48,15 @@ function Home() {
         <button onClick={Nimadir}>Nimadir</button>
       </form>
 
+
       {
         image && <img src={image} alt="" height={"200px"} width={"200px"} />
+      }
+
+      {
+        data?.data?.map((item) => 
+          <h2>{item[`name_${currentLang}`]}</h2>
+        )
       }
 
     </div>
