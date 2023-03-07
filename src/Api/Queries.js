@@ -28,8 +28,9 @@ function useDeleteData(api) {
 
 function useUpdateData(api) {
   return useMutation({
-    mutationFn: (data) => {
-      return Instance.patch(api, data).then((res) => res.data);
+    mutationFn: async (data) => {
+      const res = await Instance.patch(api, data);
+      return res.data;
     },
   });
 }
