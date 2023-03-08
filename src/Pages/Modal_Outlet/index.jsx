@@ -7,10 +7,12 @@ import styles from './index.module.scss'
 import { useForm } from 'react-hook-form'; 
 import useGetData, { useDeleteData, usePostData, useUpdateData } from '../../Api/Queries';
 import { useQueryClient } from '@tanstack/react-query';
+import { toast } from 'react-toastify';
+
+
 
 
 function Modal_Outlet({type}) {
-
   let queryClient = useQueryClient()  
 
   let {action} = useParams()
@@ -19,60 +21,93 @@ function Modal_Outlet({type}) {
 
   let {data: categories} = useGetData(["categories"], "/category")
   let {data: product} = useGetData(['product/', action], `/products/${action}`)
-  let {data: products} = useGetData(['products'], `/products`)
+  let {data: products} = useGetData(['all_products'], `/products`)
 
-
-
+  
   let Post = usePostData(`/${type}`)
   let categoryPost = usePostData('/category')
   let Update = useUpdateData(`/products/${action}`)
   let UpdateCateg = useUpdateData(`/category/${action}`)
 
-
   let CurrentProduct = products?.data?.find((e) => e.id == action)
   let CurrentCategory = categories?.data?.find((e) => e.id == action)
 
-  function Change(e) {
-    let file = e.file
-    file = URL.createObjectURL(file)
-    setImage(file)
+
+  function Success() {
+    toast.success("O'xshadi", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: "",
+      theme: "dark",
+    });
   }
 
   function Submit(values) {
     // Delete.mutate('/2445d4ab-4745-49ea-89d3-e9e831e6b18a', {
     //   onSuccess: () => console.log("success"),
     // })
-    console.log(values, ";kajsdhjalsjd");
-
 
     if(type == "products") {
-      console.log("products");
+      console.log("aijsghdhbahbsdkjbakjsbkabskdbad");
       if(action == "add") {
-        Post.mutate({
+        console.log({
+          ...values,
           "id": "",
-          "gender": "BOTH",
-          "color": values.color,
-          "active": true,
           "price": Number(values.price),
-          "size": values.size,
+          "gender": "BOTH",
+          "active": true,
+
+          // "id": "",
+          // "color": values.color,
+          // "price": Number(values.price),
+          // "size": values.size,
+          // "name_Uz": values.name_Uz,
+          // "name_Ru": values.name_Ru,
+          // "name_En": values.name_En,
+          // "description_Uz": values.description_Uz,
+          // "description_Ru": values.description_Ru,
+          // "description_En": values.description_En,
+
           "type": "string",
-          "name_Uz": values.name_Uz,
-          "name_Ru": values.name_Ru,
-          "name_En": values.name_En,
-          "description_Uz": values.description_Uz,
-          "description_Ru": values.description_Ru,
-          "description_En": values.description_En,
-          "photoId": "",
-          "categoryId": values.category,
-          "discount": 0,
-          // "image_Url": values.image_url
-        }, {
-          onSuccess: () => queryClient.invalidateQueries({queryKey: ["all_products", "products"],}) 
+          "photoId": "string",
+          "discount": 0
+          // "categoryId": values.category,
+        });
+        Post.mutate({
+          ...values,
+          "id": "",
+          "price": Number(values.price),
+          "gender": "BOTH",
+          "active": true,
+
+          // "id": "",
+          // "color": values.color,
+          // "price": Number(values.price),
+          // "size": values.size,
+          // "name_Uz": values.name_Uz,
+          // "name_Ru": values.name_Ru,
+          // "name_En": values.name_En,
+          // "description_Uz": values.description_Uz,
+          // "description_Ru": values.description_Ru,
+          // "description_En": values.description_En,
+          "type": "string",
+          "photoId": "string",
+          "discount": 0
+          // "categoryId": values.category,
+        }, {  
+          onSuccess: () => {
+            Success()
+            queryClient.invalidateQueries({queryKey: ["all_products"]}) 
+            navigate(-1)
+          }
         }) 
       }
       else {
         Update.mutate({
-          // "id": "",  
           "color": values.color,
           "active": true,
           "price": Number(values.price),
@@ -85,23 +120,16 @@ function Modal_Outlet({type}) {
           "description_En": values.description_En,
           "image_Url": values.image_url
         }, {
-          onSuccess: () => queryClient.invalidateQueries({queryKey: ['products']})
+          
+          onSuccess: () => {
+            Success()
+            navigate(-1)
+            queryClient.invalidateQueries({queryKey: ['all_products']})
+          }
         }) 
       }
     }
     else {
-      // console.log({
-      //   // "id": "",
-      //   "name_Uz": "values.name_Uz",
-      //   "name_Ru": "values.name_Ru",
-      //   "name_En": "values.name_En",
-      //   "photoId": "string",
-      //   "photo": {
-      //     "createdAt": new Date().toISOString(),
-      //     "path": "23412325321235.png",
-      //   }
-      // });
-
       if(action == "add") {
         categoryPost.mutate({
           "name_Uz": values.name_Uz,
@@ -112,6 +140,12 @@ function Modal_Outlet({type}) {
             'id': "d56be775-280e-4ed2-9417-c962cfc35a92",
             "createdAt": new Date().toISOString(),
             "path": "23412325321235.png"
+          }
+        }, {
+          onSuccess: () => {
+            Success()
+            queryClient.invalidateQueries({queryKey: ["categories"]})
+            navigate(-1)
           }
         })
       }
@@ -128,14 +162,13 @@ function Modal_Outlet({type}) {
           // }
         }, {
           onSuccess: () => {
-            console.log("Success")
+            Success()
+            queryClient.invalidateQueries({queryKey: ["categories"]})
             navigate(-1)
           }
         })
       }
     }
-
-    navigate(-1)
   }
 
 
@@ -156,10 +189,10 @@ function Modal_Outlet({type}) {
             <Form.Item  className={styles.textarea} name='description_En' initialValue={CurrentProduct?.description_En}><TextArea required placeholder="Enter product's description in english" /></Form.Item>
             
             <Form.Item 
-              name="category"
+              name="categoryId"
               className={styles.select}
               required
-              initialValue={product?.categoryId}
+              initialValue={CurrentProduct?.categoryId}
             >
               <Select
                 showSearch
