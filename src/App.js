@@ -9,17 +9,22 @@ import BestSellings from "./Pages/BestSellings";
 import Modal_Outlet from "./Pages/Modal_Outlet";
 import ControlPage from "./Pages/Control";
 
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
+
 function App() {
   return (
     <div className="App">
       <Layout>
+        <ToastContainer position="top-right" />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/users" element={<AllUsers />} />
           <Route path="/products" element={<Products />}>
             <Route path=":action" element={<Modal_Outlet type="products" />} />
           </Route>
-          <Route path="/categories" element={<Categories />}>
+          <Route path="/category" element={<Categories />}>
             <Route path=":action" element={<Modal_Outlet type="category" />} />
           </Route>
           <Route path="/best-sellings" element={<BestSellings />}></Route>

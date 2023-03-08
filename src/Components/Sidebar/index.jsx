@@ -10,7 +10,7 @@ function Sidebar() {
             <li><NavLink to="/">Home</NavLink></li>
             <li><NavLink to="/users">Users</NavLink></li>
             <li><NavLink to="/products">Products</NavLink></li>
-            <li><NavLink to="/categories">Categories</NavLink></li>
+            <li><NavLink to="/category">Categories</NavLink></li>
             <li><NavLink to="/best-sellings">Best Sellings</NavLink></li>
             <li><NavLink to="/control-panel">Control panel</NavLink></li>
         </ul>

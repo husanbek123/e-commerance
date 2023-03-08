@@ -48,7 +48,6 @@ function Home() {
         <button onClick={Nimadir}>Nimadir</button>
       </form>
 
-
       {
         image && <img src={image} alt="" height={"200px"} width={"200px"} />
       }

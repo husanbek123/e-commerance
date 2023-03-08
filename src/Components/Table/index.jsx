@@ -1,8 +1,10 @@
 import React from "react";
-import { Table } from "antd";
+import { Button, Table } from "antd";
 import useGetData, { useDeleteData, useUpdateData } from "../../Api/Queries";
 import { useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
+import Warning from "../Warning";
+import { toast } from "react-toastify";
 
 
 function MyTable({ data, type }) {
@@ -10,67 +12,45 @@ function MyTable({ data, type }) {
   let Del = useDeleteData();
   let Up = useUpdateData("/products");
 
-
   let queryClient = useQueryClient()  
   let navigate = useNavigate();
 
   function Delete(id) {
-    console.log(id);
-    Del.mutate(`products/${id}`, {
-      onSuccess: () => {
-        queryClient.invalidateQueries({queryKey: ["all_products"]})
-        navigate("/products")
+    if(type == "category") {
+      for(let i of products?.data) {
+        if(i?.categoryId == id) {
+          // console.log("amjoshdlkjas;kdjk;asjd;kja;ksjdsk;ajsksdjlaknsdlknalskdn;lk;ansjkldaok");
+          Del.mutate("/products/" + i.id)
+        }
       }
+    }
 
+    Del.mutate(`${type}/${id}`, {
+      onSuccess: () => {
+        toast.success("O'chirildi!", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: "",
+          theme: "dark",
+        });
+        navigate(`/${type}`)
+        queryClient.invalidateQueries("all_products")
+      }
     });
-    if(Del.isLoading) {
-      console.log("Loading");
-    } 
-    if(Del.isSuccess) {
-      console.log("Successfully deleted");
-    }
-    else {
-      console.log("Something went wrong");
-    }
   }
 
   function Update(id) {
-    console.log(id);
     navigate(id)
     // Up.mutate(`/${id}`, {
     //   active: false,
     // });
   }
 
-
-  let columns = [
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "Price",
-      dataIndex: "price",
-      key: "price",
-    },
-    {
-      title: "Size",
-      dataIndex: "size",
-      key: "size",
-    },
-    {
-      title: "Category",
-      dataIndex: "category",
-      key: "category",
-    },
-    {
-      title: "Action",
-      dataIndex: "action",
-      key: "action",
-    },
-  ];
-
+  let columns = []
   let myData = [];
 
   if (type === "products") {
@@ -112,14 +92,17 @@ function MyTable({ data, type }) {
             <br />
             <p>Product-id: {item?.id} </p>
             <p>Category-id: {item?.Category?.id}</p>
+            <p>Category name: {item?.Category?.name_Uz}</p>
           </h5>
         ),
         category: item?.Category?.name_Uz,
         action: (
           <div>
-            <button onClick={() => Delete(item?.id)}>Delete</button>
+            <Warning onOk={()=> Delete(item?.id)} text="Delete" color="red" />
             <a> </a>
-            <button onClick={() => Update(item?.id)}>Update</button>
+            <Button style={{
+              backgroundColor: "green"
+            }} type="primary" onClick={() => Update(item?.id)}>Update</Button>
           </div>
         ),
       });
@@ -156,9 +139,11 @@ function MyTable({ data, type }) {
         number: products?.data?.filter((e) => e.categoryId == item.id).length,
         action: (
           <div>
-            <button onClick={() => Delete(item?.id)}>Delete</button>
+            <Warning onOk={()=> Delete(item?.id)} text="Delete" color="red" />
             <a> </a>
-            <button onClick={() => Update(item?.id)}>Update</button>
+            <Button style={{
+              backgroundColor: "green"
+            }} type="primary" onClick={() => Update(item?.id)}>Update</Button>
           </div>
         ),
       });
@@ -172,13 +157,6 @@ function MyTable({ data, type }) {
         columns={columns}
         expandable={{
           expandedRowRender: (record) => (
-            // <p
-            //   style={{
-            //     margin: 0,
-            //   }}
-            // >
-            //   {record.description}
-            // </p>
             record.description
           ),
           rowExpandable: (record) => record.name !== "Not Expandable",
@@ -188,5 +166,4 @@ function MyTable({ data, type }) {
     </div>
   );
 }
-
 export default MyTable;
