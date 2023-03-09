@@ -3,7 +3,7 @@ import useGetData from '../../Api/Queries'
 
 function Messages() {
 
-    let {data} = useGetData(["messages"], "/messages")
+    let {data} = useGetData(["messages"], "/message")
     console.log(data);
 
   return (

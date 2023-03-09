@@ -12,6 +12,7 @@ function Sidebar() {
             <li><NavLink to="/products">Products</NavLink></li>
             <li><NavLink to="/category">Categories</NavLink></li>
             <li><NavLink to="/control-panel">Control panel</NavLink></li>
+            <li><NavLink to="/messages">Messages</NavLink></li>
             <li><NavLink to="/write-message">Write Message</NavLink></li>
         </ul>
     </div>
