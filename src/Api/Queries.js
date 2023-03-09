@@ -1,8 +1,6 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
 import Instance from "../Utils/Instance";
 
-
-
 function useGetData(keys, api, options) {
   return useQuery({
     queryKey: keys,

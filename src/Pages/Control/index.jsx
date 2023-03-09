@@ -86,7 +86,6 @@ function ControlPage() {
             <li className={cl.wrapper__li}> Instagram: {data?.instagram}</li>
             <li className={cl.wrapper__li}>Telegram: {data?.telegram}</li>
             <p>{data?.createdAt}</p>
-
             {
               data?.phone?.map((i, index) => (
                 <li className={cl.wrapper__li}>Phone: {++index}: {i}</li>
@@ -110,9 +109,7 @@ function ControlPage() {
       >
         <Form onFinish={(e) => OnSubmit(e)} className={cl.form}>
           <div>
-            {/* <Form.Item label="Tel" name="phone1">
-              <Input placeholder="Tel raqam kirting"></Input>
-            </Form.Item> */}
+
             <Button onClick={() => setPhones([...phones, {
               value: null
             }])}>Add phone</Button>
