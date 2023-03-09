@@ -69,11 +69,6 @@ function MyTable({ data, type }) {
         key: "size",
       },
       {
-        title: "Image",
-        dataIndex: "image",
-        key: "image",
-      },
-      {
         title: "Category",
         dataIndex: "category",
         key: "category",
@@ -98,9 +93,6 @@ function MyTable({ data, type }) {
             <p>Category name: {item?.Category?.name_Uz}</p>
           </h5>
         ),
-        image: <div className="img">
-          <img src={"http://3.19.30.204/upload/" + item?.photoId} height="60px" width="60px" alt="" />
-        </div>,
         category: item?.Category?.name_Uz,
         action: (
           <div>

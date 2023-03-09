@@ -1,5 +1,4 @@
 import { useQuery, useMutation } from "@tanstack/react-query";
-// import axios from "axios";
 import Instance from "../Utils/Instance";
 
 function useGetData(keys, api, options) {

@@ -16,7 +16,8 @@ function Warning({text, color, onOk, onCancel}) {
       <Button 
         style={{
           backgroundColor: color,
-          padding: "4px 12px 6px"
+          padding: "4px 12px 6px",
+          
         }}
         type="primary" 
         onClick={() => setModal1Open(true)}>
@@ -27,6 +28,9 @@ function Warning({text, color, onOk, onCancel}) {
         title="Ishonchingiz komilmi?"
         centered
         open={modal1Open}
+        style={{
+          // transition: "all 1s"
+        }}
         onOk={Ok}
         onCancel={onCancel  ? onCancel : () => setModal1Open(false)}
       >
