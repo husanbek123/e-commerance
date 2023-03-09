@@ -1,8 +1,11 @@
 import React, { useState } from "react";
-import useGetData, { useUpdateData } from "../../Api/Queries";
+import useGetData, {
+  useDeleteData,
+  usePostData,
+  useUpdateData,
+} from "../../Api/Queries";
 import { Button, Form, Input, Modal } from "antd";
 import cl from "./stayle.module.scss";
-import parse from "html-react-parser";
 
 function ControlPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,14 +25,14 @@ function ControlPage() {
 
   const Updata = useUpdateData(`/information/${id}`);
 
+  const delite = useDeleteData();
+
   const OnUpdate = (datavalues) => {
     let data = {
       ...datavalues,
       phone: [datavalues.phone1],
     };
-
     delete data.phone1;
-
     Updata.mutate(
       {
         ...data,
@@ -55,6 +58,7 @@ function ControlPage() {
         <br />
         {data?.data?.map((e) => (
           <ul key={e.id} className="row">
+            {console.log(e, "lsfakdvfblfsfkj")}
             <div className={cl.wrapper}>
               <li className={cl.wrapper__li}> Email:{e?.email}</li>
               <li className={cl.wrapper__li}> Address:{e?.address}</li>

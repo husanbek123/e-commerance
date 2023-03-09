@@ -24,6 +24,7 @@ function AllUsers() {
       dataIndex: "hash",
     },
   ];
+
   return (
     <div className={st.user}>
       <h1 className={st.user__heading}>All User</h1>
