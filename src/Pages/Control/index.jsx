@@ -1,3 +1,4 @@
+
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import useGetData, {
@@ -39,6 +40,7 @@ function ControlPage() {
     setIsModalOpen(false);
   };
 
+
   const { data, isLoading } = useGetData(
     ["information"],
     "/information/"
@@ -57,6 +59,7 @@ function ControlPage() {
    
     UpdateData.mutate(
       e,
+
       {
         onSuccess: () => queryClient.invalidateQueries("information"),
         onError: (eror) => console.log(eror, "errr"),
@@ -64,11 +67,13 @@ function ControlPage() {
     );
   };
 
+
   function Remove(name) {
     console.log(name);
     let newPhones = phones.filter(i => i.value != name)
     setPhones(newPhones)
   }
+
 
   return (
     <>
@@ -80,6 +85,7 @@ function ControlPage() {
       </div>
       <div>
         <br />
+
         <ul className="column">
           <div className={cl.wrapper}>
             <li className={cl.wrapper__li}> Email: {data?.data[0]?.email}</li>
@@ -99,6 +105,7 @@ function ControlPage() {
             )
           }
         </ul>
+
       </div>
       <Modal
         title="Basic Modal"
@@ -110,6 +117,7 @@ function ControlPage() {
       >
         <Form onFinish={(e) => OnSubmit(e)} className={cl.form}>
           <div>
+
             <Button onClick={() => setPhones([...phones, {
               value: null
             }])}>Add phone</Button>
@@ -143,6 +151,7 @@ function ControlPage() {
             </Form.Item>
             <Form.Item label="address" name="address">
               <Input required placeholder="address kirting"></Input>
+
             </Form.Item>
             
           </div>
