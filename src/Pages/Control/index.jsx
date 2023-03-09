@@ -63,8 +63,6 @@ function ControlPage() {
     );
   };
 
-
-
   function Remove(name) {
     console.log(name);
     let newPhones = phones.filter(i => i.value != name)
