@@ -38,12 +38,15 @@ function ControlPage() {
     setIsModalOpen(false);
   };
 
+
   const InfoData = usePostData("/information/");
   const UpdateData = useUpdateData("/information/47dff9f3-a6a7-4e7d-989c-daa911245e91");
   const { data, isLoading } = useGetData(
-    ["information"],
+
+
+  const { data } = useGetData(["information"],
     "/information/47dff9f3-a6a7-4e7d-989c-daa911245e91"
-  );
+    );
 
   useEffect(() => {
     setPhones(data?.phone?.map(item => ({
@@ -52,10 +55,12 @@ function ControlPage() {
   }, [data])
   
   const OnSubmit = (e) => {
-    console.log(e);
-   
+    console.log(e)
     UpdateData.mutate(
       e,
+  const Updata = useUpdateData(
+    "/information/4c5161df-130a-40cf-a044-0b83589740d9"
+  );
       {
         onSuccess: () => queryClient.invalidateQueries("information"),
         onError: (eror) => console.log(eror, "errr"),
@@ -64,12 +69,12 @@ function ControlPage() {
   };
 
 
-
   function Remove(name) {
     console.log(name);
     let newPhones = phones.filter(i => i.value != name)
     setPhones(newPhones)
   }
+
 
   return (
     <>
@@ -88,7 +93,6 @@ function ControlPage() {
             <li className={cl.wrapper__li}> Instagram: {data?.instagram}</li>
             <li className={cl.wrapper__li}>Telegram: {data?.telegram}</li>
             <p>{data?.createdAt}</p>
-
             {
               data?.phone?.map((i, index) => (
                 <li className={cl.wrapper__li}>Phone: {++index}: {i}</li>
@@ -110,9 +114,9 @@ function ControlPage() {
         width={1200}
         footer={false}
       >
-        <Form onFinish={(e) => OnSubmit(e)} className={cl.form}>
+        <Form onFinish={(e) => OnUpdate(e)} className={cl.form}>
           <div>
-            {/* <Form.Item label="Tel" name="phone1">
+            <Form.Item initialValue={data?.phone} label="Tel" name="phone1">
               <Input placeholder="Tel raqam kirting"></Input>
             </Form.Item> */}
             <Button onClick={() => setPhones([...phones, {
@@ -149,7 +153,6 @@ function ControlPage() {
             <Form.Item label="address" name="address">
               <Input required placeholder="address kirting"></Input>
             </Form.Item>
-            
           </div>
           <Button htmlType="submit" type="primary">
             Update
