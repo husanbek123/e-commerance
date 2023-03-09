@@ -11,12 +11,13 @@ import cl from "./stayle.module.scss";
 import parse from 'html-react-parser'
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 
-import { Upload } from 'antd';
-import ImgCrop from 'antd-img-crop';
 
 
 function ControlPage() {
+
+  let {t} = useTranslation()
 
   let queryClient = useQueryClient()
 
@@ -38,15 +39,12 @@ function ControlPage() {
     setIsModalOpen(false);
   };
 
-
-  const InfoData = usePostData("/information/");
-  const UpdateData = useUpdateData("/information/47dff9f3-a6a7-4e7d-989c-daa911245e91");
   const { data, isLoading } = useGetData(
-
-
-  const { data } = useGetData(["information"],
-    "/information/47dff9f3-a6a7-4e7d-989c-daa911245e91"
-    );
+    ["information"],
+    "/information/"
+  );
+  const InfoData = usePostData("/information/");
+  const UpdateData = useUpdateData("/information/" + data?.data[0]?.id);
 
   useEffect(() => {
     setPhones(data?.phone?.map(item => ({
@@ -55,12 +53,10 @@ function ControlPage() {
   }, [data])
   
   const OnSubmit = (e) => {
-    console.log(e)
+    console.log(e);
+   
     UpdateData.mutate(
       e,
-  const Updata = useUpdateData(
-    "/information/4c5161df-130a-40cf-a044-0b83589740d9"
-  );
       {
         onSuccess: () => queryClient.invalidateQueries("information"),
         onError: (eror) => console.log(eror, "errr"),
@@ -68,40 +64,38 @@ function ControlPage() {
     );
   };
 
-
   function Remove(name) {
     console.log(name);
     let newPhones = phones.filter(i => i.value != name)
     setPhones(newPhones)
   }
 
-
   return (
     <>
       <div className="row">
-        <h2>Information</h2>
+        <h2>{t("Titles.Information")}</h2>
         <Button onClick={showModal} type="primary">
-          Update Info
+          {t("Button.Update Info")}
         </Button>
       </div>
       <div>
         <br />
         <ul className="column">
           <div className={cl.wrapper}>
-            <li className={cl.wrapper__li}> Email: {data?.email}</li>
-            <li className={cl.wrapper__li}> Address: {data?.address}</li>
-            <li className={cl.wrapper__li}> Instagram: {data?.instagram}</li>
-            <li className={cl.wrapper__li}>Telegram: {data?.telegram}</li>
-            <p>{data?.createdAt}</p>
+            <li className={cl.wrapper__li}> Email: {data?.data[0]?.email}</li>
+            <li className={cl.wrapper__li}> Address: {data?.data[0]?.address}</li>
+            <li className={cl.wrapper__li}> Instagram: {data?.data[0]?.instagram}</li>
+            <li className={cl.wrapper__li}>Telegram: {data?.data[0]?.telegram}</li>
+            <p>{data?.data[0]?.createdAt}</p>
             {
-              data?.phone?.map((i, index) => (
+              data?.data[0]?.phone?.map((i, index) => (
                 <li className={cl.wrapper__li}>Phone: {++index}: {i}</li>
               ))
             }
           </div>
           {
             isLoading != true && parse(
-              data?.addressMap
+              data?.data[0]?.addressMap
             )
           }
         </ul>
@@ -114,11 +108,8 @@ function ControlPage() {
         width={1200}
         footer={false}
       >
-        <Form onFinish={(e) => OnUpdate(e)} className={cl.form}>
+        <Form onFinish={(e) => OnSubmit(e)} className={cl.form}>
           <div>
-            <Form.Item initialValue={data?.phone} label="Tel" name="phone1">
-              <Input placeholder="Tel raqam kirting"></Input>
-            </Form.Item> */}
             <Button onClick={() => setPhones([...phones, {
               value: null
             }])}>Add phone</Button>
@@ -153,6 +144,7 @@ function ControlPage() {
             <Form.Item label="address" name="address">
               <Input required placeholder="address kirting"></Input>
             </Form.Item>
+            
           </div>
           <Button htmlType="submit" type="primary">
             Update

@@ -1,0 +1,42 @@
+{
+  "Titles": {
+    "All users": "Все пользователи",
+    "All Categories": "Все категории",
+    "Information": "Информация",
+    "All Products": "Все продукты",
+    "Welcome": "Добро пожаловать!"
+  },
+  "Pages": {
+    "Users": "Пользователи",
+    "Products": "Продукты",
+    "Categories": "Категории",
+    "Messages": "Сообщения",
+    "Home": "Дом"
+  },
+  "Button": {
+    "Add": "Добавлять",
+    "Update": "Обновлять",
+    "Delete": "Удалить",
+    "Add new Category": "Добавить новую категорию",
+    "Add Product": "Добавить продукт",
+    "Update Info": "Обновить данные"
+  },
+  "Others": {
+    "All": "Все",
+    "Product": "Продукт",
+    "Name": "Имя",
+    "Price": "Цена",
+    "Size": "Размер",
+    "Image": "Изображение",
+    "Category": "Категория",
+    "Action": "Действие",
+    "Number of products": "Количество продуктов",
+    "Number": "Число",
+    "Update Info": "Обновить данные",
+    "Email": "Электронная почта",
+    "Phone": "Телефон",
+    "Status": "Положение дел",
+    "Change": "Изменять",
+    "Title": "Заголовок"
+  }
+}

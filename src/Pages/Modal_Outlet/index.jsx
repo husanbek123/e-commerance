@@ -9,18 +9,21 @@ import { toast } from 'react-toastify';
 
 import { Upload } from 'antd';
 import ImgCrop from 'antd-img-crop';
+import { useTranslation } from 'react-i18next';
 
 
 function Modal_Outlet({type}) {
+
+  let {t} = useTranslation()
   let queryClient = useQueryClient()  
 
-  let {action} = useParams()
+  let {action, id} = useParams()
   let navigate = useNavigate()
   let [photoId, setPhotoId] = useState("")
 
   let {data: categories} = useGetData(["categories"], "/category")
-  let {data: product} = useGetData(['product/', action], `/products/${action}`)
   let {data: products} = useGetData(['all_products'], `/products`)
+  let {data: Messages} = useGetData(["messages"], "/message")
 
   
   let Post = usePostData(`/${type}`)
@@ -30,6 +33,11 @@ function Modal_Outlet({type}) {
 
   let CurrentProduct = products?.data?.find((e) => e.id == action)
   let CurrentCategory = categories?.data?.find((e) => e.id == action)
+
+  let CurrentMessage = Messages?.data[id - 1]
+  console.log(CurrentMessage);
+
+  let UpdateMessage = useUpdateData(`/message/${CurrentMessage?.id}`)
 
   const [fileList, setFileList] = useState([]);
 
@@ -67,18 +75,9 @@ function Modal_Outlet({type}) {
   }
 
   function Submit(values) {
+    console.log(values);
     if(type == "products") {
       if(action == "add") {
-        console.log({
-          ...values,
-          "id": "",
-          "price": Number(values.price),
-          "gender": "BOTH",
-          "active": true,
-          "type": "string",
-          "photoId": photoId.toString(),
-          "discount": 0
-        });
         Post.mutate({
           ...values,
           "id": "",
@@ -119,7 +118,7 @@ function Modal_Outlet({type}) {
         }) 
       }
     }
-    else {
+    else if(type == "category") {
       if(action == "add") {
         categoryPost.mutate({
           "name_Uz": values.name_Uz,
@@ -148,6 +147,17 @@ function Modal_Outlet({type}) {
           }
         })
       }
+    }
+    else {
+      UpdateMessage.mutate({
+        ...CurrentMessage,
+        status: values.status
+      }, {
+        onSuccess: () => {
+          queryClient.invalidateQueries("messages")
+          navigate(-1)
+        }
+      })
     }
   }
 
@@ -201,13 +211,13 @@ function Modal_Outlet({type}) {
               </Upload>
             </ImgCrop>
             <Form.Item required className={styles.textarea} name="image_url"><Input placeholder='url for image' /></Form.Item>
-            <Button htmlType='submit' type='primary'>{action == "add" ? "Add" : "Update"}</Button>
+            <Button htmlType='submit' type='primary'>{action == "add" ? t("Button.Add") : t("Button.Update")}</Button>
           </Form>
         </div>
       </>
     )
   }
-  else {
+  else if(type == "category") {
     return (
       <>
         <div className={styles.closeArea} onClick={() => navigate(-1)}></div>
@@ -228,7 +238,43 @@ function Modal_Outlet({type}) {
                 {fileList.length < 1 && '+ Upload'}
               </Upload>
             </ImgCrop>
-            <Button htmlType='submit' type='primary'>{action == "add" ? "Add" : "Update"}</Button>
+            <Button htmlType='submit' type='primary'>{action == "add" ? t("Button.Add") : t("Button.Update")}</Button>
+          </Form>
+        </div>
+      </>
+    )
+  }
+  else {
+    return (
+      <>
+        <div className={styles.closeArea} onClick={() => navigate(-1)}></div>
+        <div className={[styles.modal, styles.category].join(" ")}>
+          <Form onFinish={Submit}>
+            {/* <Form.Item label="Status" className={styles.input} name='status' initialValue={CurrentMessage?.status}><Input required placeholder="Enter product's title in english" /></Form.Item> */}
+            
+            <Form.Item 
+              name="status"
+              className={styles.select}
+              initialValue={CurrentMessage?.status}
+              label="Status"
+            >
+              <Select
+                showSearch
+                className={styles.select}
+                placeholder="Choose category"
+                optionFilterProp="children"
+                filterOption={(input, option) => (option?.label ?? '').includes(input)}
+                filterSort={(optionA, optionB) =>
+                  (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
+                }
+                options={["PENDING", "RESOLVED", "REJECTED"].map(item => ({
+                  title: item,
+                  value: item
+                }))}
+              />
+            </Form.Item>
+
+            <Button htmlType='submit' type='primary'>{action == "add" ? t("Button.Add") : t("Button.Update")}</Button>
           </Form>
         </div>
       </>
