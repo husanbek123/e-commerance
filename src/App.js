@@ -1,6 +1,6 @@
+import "./App.scss";
 import Layout from "./Components/Layout";
 import { Route, Routes } from "react-router-dom";
-import "./App.scss";
 import Home from "./Pages/Home";
 import AllUsers from "./Pages/Users";
 import Products from "./Pages/Products";
@@ -10,11 +10,29 @@ import ControlPage from "./Pages/Control";
 
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import WriteMessage from "./Pages/WriteMessage";
 import Messages from "./Pages/Messages";
+import i18next from "i18next";
+import { initReactI18next } from "react-i18next";
+
+import uzbek from './Lang/Uzbek.json'
+import english from './Lang/English.json'
+import russian from './Lang/Russian.json'
+import useMyStore from "./Context";
 
 
 function App() {
+
+  let {currentLang} = useMyStore((state) => state)
+  i18next.use(initReactI18next).init({
+    lng: currentLang,
+    debug: true,
+    resources: {
+      uz: { translation: uzbek },
+      en: { translation: english },
+      ru: { translation: russian }
+    } 
+  })
+
   return (
     <div className="App">
       <Layout>
@@ -32,8 +50,9 @@ function App() {
             <Route path=":edit" element={<Modal_Outlet type="edit" />} />
             <Route path=":updete" element={<Modal_Outlet type="updete" />} />
           </Route>
-          <Route path="/messages" element={<Messages />} />
-          <Route path="/write-message" element={<WriteMessage />} />
+          <Route path="/messages" element={<Messages />} >
+            <Route path=":id" element={<Modal_Outlet type="message" />} />
+          </Route>
         </Routes>
       </Layout>
     </div>

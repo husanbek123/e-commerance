@@ -1,0 +1,42 @@
+{
+    "Titles": {
+        "All users": "All users",
+        "All Categories": "All Categories",
+        "Information": "Information",
+        "All Products": "All Products",
+        "Welcome": "Welcome!"
+    },
+    "Pages": {
+        "Users": "Users",
+        "Products": "Products",
+        "Categories": "Categories",
+        "Messages": "Messages",
+        "Home": "Home"
+    },
+    "Button": {
+        "Add": "Add",
+        "Update": "Update",
+        "Delete": "Delete",
+        "Add new Category": "Add new Category",
+        "Add Product": "Add Product",
+        "Update Info": "Update Info"
+    },
+    "Others": {
+        "All": "All",
+        "Product": "Product",
+        "Name": "Name",
+        "Price": "Price",
+        "Size": "Size",
+        "Image": "Image",
+        "Category": "Category",
+        "Action": "Action",
+        "Number of products": "Number of products",
+        "Number": "Number",
+        "Update Info": "Update Info",
+        "Email": "Email",
+        "Phone": "Phone",
+        "Status": "Status",
+        "Change": "Change",
+        "Title": "Title"
+    }
+}
