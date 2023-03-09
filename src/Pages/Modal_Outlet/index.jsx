@@ -2,77 +2,101 @@ import { Button, Form, Input, Select } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import MyUpload from '../../Components/Upload';
 import styles from './index.module.scss'
-import { useForm } from 'react-hook-form'; 
 import useGetData, { useDeleteData, usePostData, useUpdateData } from '../../Api/Queries';
 import { useQueryClient } from '@tanstack/react-query';
+import { toast } from 'react-toastify';
+
+import { Upload } from 'antd';
+import ImgCrop from 'antd-img-crop';
+import { useTranslation } from 'react-i18next';
 
 
 function Modal_Outlet({type}) {
 
+  let {t} = useTranslation()
   let queryClient = useQueryClient()  
 
-  let {action} = useParams()
+  let {action, id} = useParams()
   let navigate = useNavigate()
-  let [image, setImage] = useState(null)
+  let [photoId, setPhotoId] = useState("")
 
   let {data: categories} = useGetData(["categories"], "/category")
-  let {data: product} = useGetData(['product/', action], `/products/${action}`)
-  let {data: products} = useGetData(['products'], `/products`)
+  let {data: products} = useGetData(['all_products'], `/products`)
+  let {data: Messages} = useGetData(["messages"], "/message")
 
-
-
+  
   let Post = usePostData(`/${type}`)
   let categoryPost = usePostData('/category')
   let Update = useUpdateData(`/products/${action}`)
   let UpdateCateg = useUpdateData(`/category/${action}`)
 
-
   let CurrentProduct = products?.data?.find((e) => e.id == action)
   let CurrentCategory = categories?.data?.find((e) => e.id == action)
 
-  function Change(e) {
-    let file = e.file
-    file = URL.createObjectURL(file)
-    setImage(file)
+  let CurrentMessage = Messages?.data[id - 1]
+  console.log(CurrentMessage);
+
+  let UpdateMessage = useUpdateData(`/message/${CurrentMessage?.id}`)
+
+  const [fileList, setFileList] = useState([]);
+
+  const onChange = ({ fileList: newFileList, file }) => {
+    console.log(file);
+    setFileList(newFileList);
+    setPhotoId(file?.response?.id)
+  };
+  const onPreview = async (file) => {
+    let src = file.url;
+    if (!src) {
+      src = await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file.originFileObj);
+        reader.onload = () => resolve(reader.result);
+      });
+    }
+    const image = new Image();
+    image.src = src;
+    const imgWindow = window.open(src);
+    imgWindow?.document.write(image.outerHTML);
+  };
+
+  function Success() {
+    toast.success("O'xshadi", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: "",
+      theme: "dark",
+    });
   }
 
   function Submit(values) {
-    // Delete.mutate('/2445d4ab-4745-49ea-89d3-e9e831e6b18a', {
-    //   onSuccess: () => console.log("success"),
-    // })
-    console.log(values, ";kajsdhjalsjd");
-
-
+    console.log(values);
     if(type == "products") {
-      console.log("products");
       if(action == "add") {
         Post.mutate({
+          ...values,
           "id": "",
-          "gender": "BOTH",
-          "color": values.color,
-          "active": true,
           "price": Number(values.price),
-          "size": values.size,
+          "gender": "BOTH",
+          "active": true,
           "type": "string",
-          "name_Uz": values.name_Uz,
-          "name_Ru": values.name_Ru,
-          "name_En": values.name_En,
-          "description_Uz": values.description_Uz,
-          "description_Ru": values.description_Ru,
-          "description_En": values.description_En,
-          "photoId": "",
-          "categoryId": values.category,
-          "discount": 0,
-          // "image_Url": values.image_url
-        }, {
-          onSuccess: () => queryClient.invalidateQueries({queryKey: ["all_products", "products"],}) 
+          "photoId": photoId.toString(),
+          "discount": 0
+        }, {  
+          onSuccess: () => {
+            Success()
+            queryClient.invalidateQueries({queryKey: ["all_products"]}) 
+            navigate(-1)
+          }
         }) 
       }
       else {
         Update.mutate({
-          // "id": "",  
           "color": values.color,
           "active": true,
           "price": Number(values.price),
@@ -85,33 +109,27 @@ function Modal_Outlet({type}) {
           "description_En": values.description_En,
           "image_Url": values.image_url
         }, {
-          onSuccess: () => queryClient.invalidateQueries({queryKey: ['products']})
+          
+          onSuccess: () => {
+            Success()
+            navigate(-1)
+            queryClient.invalidateQueries({queryKey: ['all_products']})
+          }
         }) 
       }
     }
-    else {
-      // console.log({
-      //   // "id": "",
-      //   "name_Uz": "values.name_Uz",
-      //   "name_Ru": "values.name_Ru",
-      //   "name_En": "values.name_En",
-      //   "photoId": "string",
-      //   "photo": {
-      //     "createdAt": new Date().toISOString(),
-      //     "path": "23412325321235.png",
-      //   }
-      // });
-
+    else if(type == "category") {
       if(action == "add") {
         categoryPost.mutate({
           "name_Uz": values.name_Uz,
           "name_Ru": values.name_Ru,
           "name_En": values.name_En,
-          "photoId": "d56be775-280e-4ed2-9417-c962cfc35a92",
-          "photo": {
-            'id': "d56be775-280e-4ed2-9417-c962cfc35a92",
-            "createdAt": new Date().toISOString(),
-            "path": "23412325321235.png"
+          "photoId": photoId
+        }, {
+          onSuccess: () => {
+            Success()
+            queryClient.invalidateQueries({queryKey: ["categories"]})
+            navigate(-1)
           }
         })
       }
@@ -121,23 +139,27 @@ function Modal_Outlet({type}) {
           "name_Ru": values.name_Ru,
           "name_En": values.name_En,
           "photoId": "d56be775-280e-4ed2-9417-c962cfc35a92"
-          // "photo": {
-          //   'id': "d56be775-280e-4ed2-9417-c962cfc35a92",
-          //   "createdAt": new Date().toISOString(),
-          //   "path": "23412325321235.png"
-          // }
         }, {
           onSuccess: () => {
-            console.log("Success")
+            Success()
+            queryClient.invalidateQueries({queryKey: ["categories"]})
             navigate(-1)
           }
         })
       }
     }
-
-    navigate(-1)
+    else {
+      UpdateMessage.mutate({
+        ...CurrentMessage,
+        status: values.status
+      }, {
+        onSuccess: () => {
+          queryClient.invalidateQueries("messages")
+          navigate(-1)
+        }
+      })
+    }
   }
-
 
   if(type == "products") {
     return (
@@ -156,10 +178,10 @@ function Modal_Outlet({type}) {
             <Form.Item  className={styles.textarea} name='description_En' initialValue={CurrentProduct?.description_En}><TextArea required placeholder="Enter product's description in english" /></Form.Item>
             
             <Form.Item 
-              name="category"
+              name="categoryId"
               className={styles.select}
               required
-              initialValue={product?.categoryId}
+              initialValue={CurrentProduct?.categoryId}
             >
               <Select
                 showSearch
@@ -176,8 +198,47 @@ function Modal_Outlet({type}) {
                 }))}
               />
             </Form.Item>
+            <ImgCrop rotate>
+              <Upload
+                action="http://3.19.30.204/upload/upload"
+                listType="picture-card"
+                fileList={fileList}
+                onChange={onChange}
+                onPreview={onPreview}
+                name="photo"
+              >
+                {fileList.length < 1 && '+ Upload'}
+              </Upload>
+            </ImgCrop>
             <Form.Item required className={styles.textarea} name="image_url"><Input placeholder='url for image' /></Form.Item>
-            <Button htmlType='submit' type='primary'>{action == "add" ? "Add" : "Update"}</Button>
+            <Button htmlType='submit' type='primary'>{action == "add" ? t("Button.Add") : t("Button.Update")}</Button>
+          </Form>
+        </div>
+      </>
+    )
+  }
+  else if(type == "category") {
+    return (
+      <>
+        <div className={styles.closeArea} onClick={() => navigate(-1)}></div>
+        <div className={[styles.modal, styles.category].join(" ")}> 
+          <Form onFinish={Submit}>
+            <Form.Item label="Uz name" className={styles.input} name='name_Uz' initialValue={CurrentCategory?.name_Uz}><Input required placeholder="Enter product's title in uzbek" /></Form.Item>
+            <Form.Item label="Ru name" className={styles.input} name='name_Ru' initialValue={CurrentCategory?.name_Ru}><Input required placeholder="Enter product's title in russian" /></Form.Item>
+            <Form.Item label="En name" className={styles.input} name='name_En' initialValue={CurrentCategory?.name_En}><Input required placeholder="Enter product's title in english" /></Form.Item>
+            <ImgCrop rotate>
+              <Upload
+                action="http://3.19.30.204/upload/upload"
+                listType="picture-card"
+                fileList={fileList}
+                onChange={onChange}
+                onPreview={onPreview}
+                name="photo"
+              >
+                {fileList.length < 1 && '+ Upload'}
+              </Upload>
+            </ImgCrop>
+            <Button htmlType='submit' type='primary'>{action == "add" ? t("Button.Add") : t("Button.Update")}</Button>
           </Form>
         </div>
       </>
@@ -187,13 +248,33 @@ function Modal_Outlet({type}) {
     return (
       <>
         <div className={styles.closeArea} onClick={() => navigate(-1)}></div>
-        <div className={[styles.modal, styles.category].join(" ")}> 
+        <div className={[styles.modal, styles.category].join(" ")}>
           <Form onFinish={Submit}>
-            <Form.Item label="Uz name" className={styles.input} name='name_Uz' initialValue={CurrentCategory?.name_Uz}><Input required placeholder="Enter product's title in uzbek" /></Form.Item>
-            <Form.Item label="Ru name" className={styles.input} name='name_Ru' initialValue={CurrentCategory?.name_Ru}><Input required placeholder="Enter product's title in russian" /></Form.Item>
-            <Form.Item label="En name" className={styles.input} name='name_En' initialValue={CurrentCategory?.name_En}><Input required placeholder="Enter product's title in english" /></Form.Item>
+            {/* <Form.Item label="Status" className={styles.input} name='status' initialValue={CurrentMessage?.status}><Input required placeholder="Enter product's title in english" /></Form.Item> */}
             
-            <Button htmlType='submit' type='primary'>{action == "add" ? "Add" : "Update"}</Button>
+            <Form.Item 
+              name="status"
+              className={styles.select}
+              initialValue={CurrentMessage?.status}
+              label="Status"
+            >
+              <Select
+                showSearch
+                className={styles.select}
+                placeholder="Choose category"
+                optionFilterProp="children"
+                filterOption={(input, option) => (option?.label ?? '').includes(input)}
+                filterSort={(optionA, optionB) =>
+                  (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
+                }
+                options={["PENDING", "RESOLVED", "REJECTED"].map(item => ({
+                  title: item,
+                  value: item
+                }))}
+              />
+            </Form.Item>
+
+            <Button htmlType='submit' type='primary'>{action == "add" ? t("Button.Add") : t("Button.Update")}</Button>
           </Form>
         </div>
       </>

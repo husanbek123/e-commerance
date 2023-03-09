@@ -1,0 +1,42 @@
+{
+  "Titles": {
+    "All users": "Barcha foydalanuvchilar",
+    "All Categories": "Barcha toifalar",
+    "Information": "Ma `lumot",
+    "All Products": "Barcha mahsulotlar",
+    "Welcome": "Xush kelibsiz!"
+  },
+  "Pages": {
+    "Users": "Foydalanuvchilar",
+    "Products": "Mahsulotlar",
+    "Categories": "Kategoriyalar",
+    "Messages": "Xabarlar",
+    "Home": "Uy"
+  },
+  "Button": {
+    "Add": "Qo'shish",
+    "Update": "Yangilash",
+    "Delete": "Oʻchirish",
+    "Add new Category": "Yangi toifa qo'shish",
+    "Add Product": "Mahsulot qo'shish",
+    "Update Info": "Ma'lumotni yangilash"
+  },
+  "Others": {
+    "All": "Hammasi",
+    "Product": "Mahsulot",
+    "Name": "Ism",
+    "Price": "Narxi",
+    "Size": "Hajmi",
+    "Image": "Rasm",
+    "Category": "Turkum",
+    "Action": "Harakat",
+    "Number of products": "Mahsulotlar soni",
+    "Number": "Raqam",
+    "Update Info": "Ma'lumotni yangilash",
+    "Email": "Elektron pochta",
+    "Phone": "Telefon",
+    "Status": "Holat",
+    "Change": "O'zgartirish",
+    "Title": "Sarlavha"
+  }
+}
