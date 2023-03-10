@@ -1,4 +1,3 @@
-
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import useGetData, {
@@ -9,26 +8,25 @@ import useGetData, {
 
 import { Button, Form, Input, Modal, Space } from "antd";
 import cl from "./stayle.module.scss";
-import parse from 'html-react-parser'
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import parse from "html-react-parser";
+import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
-
-
 function ControlPage() {
+  let { t } = useTranslation();
 
-  let {t} = useTranslation()
-
-  let queryClient = useQueryClient()
+  let queryClient = useQueryClient();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [phones, setPhones] = useState([{
-    placeholder: "phone 1",
-    value: null,
-    label: "Phone 1" ,
-    name: "phone_1"
-  }]);
+  const [phones, setPhones] = useState([
+    {
+      placeholder: "phone 1",
+      value: null,
+      label: "Phone 1",
+      name: "phone_1",
+    },
+  ]);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -40,23 +38,21 @@ function ControlPage() {
     setIsModalOpen(false);
   };
 
-
-  const { data, isLoading } = useGetData(
-    ["information"],
-    "/information/"
-  );
+  const { data, isLoading } = useGetData(["information"], "/information/");
   const InfoData = usePostData("/information/");
   const UpdateData = useUpdateData("/information/" + data?.data[0]?.id);
 
   useEffect(() => {
-    setPhones(data?.phone?.map(item => ({
-      value: item,
-    })))
-  }, [data])
-  
+    setPhones(
+      data?.phone?.map((item) => ({
+        value: item,
+      }))
+    );
+  }, [data]);
+
   const OnSubmit = (e) => {
     console.log(e);
-   
+
     UpdateData.mutate(
       e,
 
@@ -67,13 +63,11 @@ function ControlPage() {
     );
   };
 
-
   function Remove(name) {
     console.log(name);
-    let newPhones = phones.filter(i => i.value != name)
-    setPhones(newPhones)
+    let newPhones = phones.filter((i) => i.value != name);
+    setPhones(newPhones);
   }
-
 
   return (
     <>
@@ -89,23 +83,26 @@ function ControlPage() {
         <ul className="column">
           <div className={cl.wrapper}>
             <li className={cl.wrapper__li}> Email: {data?.data[0]?.email}</li>
-            <li className={cl.wrapper__li}> Address: {data?.data[0]?.address}</li>
-            <li className={cl.wrapper__li}> Instagram: {data?.data[0]?.instagram}</li>
-            <li className={cl.wrapper__li}>Telegram: {data?.data[0]?.telegram}</li>
+            <li className={cl.wrapper__li}>
+              {" "}
+              Address: {data?.data[0]?.address}
+            </li>
+            <li className={cl.wrapper__li}>
+              {" "}
+              Instagram: {data?.data[0]?.instagram}
+            </li>
+            <li className={cl.wrapper__li}>
+              Telegram: {data?.data[0]?.telegram}
+            </li>
             <p>{data?.data[0]?.createdAt}</p>
-            {
-              data?.data[0]?.phone?.map((i, index) => (
-                <li className={cl.wrapper__li}>Phone: {++index}: {i}</li>
-              ))
-            }
+            {data?.data[0]?.phone?.map((i, index) => (
+              <li className={cl.wrapper__li}>
+                Phone: {++index}: {i}
+              </li>
+            ))}
           </div>
-          {
-            isLoading != true && parse(
-              data?.data[0]?.addressMap
-            )
-          }
+          {isLoading != true && parse(data?.data[0]?.addressMap)}
         </ul>
-
       </div>
       <Modal
         title="Basic Modal"
@@ -117,22 +114,38 @@ function ControlPage() {
       >
         <Form onFinish={(e) => OnSubmit(e)} className={cl.form}>
           <div>
-
-            <Button onClick={() => setPhones([...phones, {
-              value: null
-            }])}>Add phone</Button>
+            <Button
+              onClick={() =>
+                setPhones([
+                  ...phones,
+                  {
+                    value: null,
+                  },
+                ])
+              }
+            >
+              Add phone
+            </Button>
             <br />
             <br />
-            {
-              phones?.map((item, index) => (
-                <div className="input">
-                  <Form.Item label={"Phone" + (index + 1)} initialValue={item.value} name={["phone", index]}>
-                    <Input type="tel" required placeholder={"phone " + index}></Input>
-                  </Form.Item>
-                  <button type="button" onClick={() => Remove(item.value)}>Delete</button>
-                </div>
-              ))
-            }
+            {phones?.map((item, index) => (
+              <div className="input">
+                <Form.Item
+                  label={"Phone" + (index + 1)}
+                  initialValue={item.value}
+                  name={["phone", index]}
+                >
+                  <Input
+                    type="tel"
+                    required
+                    placeholder={"phone " + index}
+                  ></Input>
+                </Form.Item>
+                <button type="button" onClick={() => Remove(item.value)}>
+                  Delete
+                </button>
+              </div>
+            ))}
           </div>
           <div>
             <Form.Item label="Email" name="email">
@@ -151,9 +164,7 @@ function ControlPage() {
             </Form.Item>
             <Form.Item label="address" name="address">
               <Input required placeholder="address kirting"></Input>
-
             </Form.Item>
-            
           </div>
           <Button htmlType="submit" type="primary">
             Update
