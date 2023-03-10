@@ -167,21 +167,21 @@ function Modal_Outlet({type}) {
         <div className={styles.closeArea} onClick={() => navigate(-1)}></div>
         <div className={styles.modal}> 
           <Form onFinish={Submit}>
-            <Form.Item  className={styles.input} name='name_Uz' initialValue={CurrentProduct?.name_Uz}><Input required placeholder="Enter product's title in uzbek" /></Form.Item>
-            <Form.Item  className={styles.input} name='name_Ru' initialValue={CurrentProduct?.name_Ru}><Input required placeholder="Enter product's title in russian" /></Form.Item>
-            <Form.Item  className={styles.input} name='name_En' initialValue={CurrentProduct?.name_En}><Input required placeholder="Enter product's title in english" /></Form.Item>
-            <Form.Item  className={styles.input} name='price' initialValue={CurrentProduct?.price}><Input required placeholder="Enter product's price" /></Form.Item>
-            <Form.Item  className={styles.input} name='size' initialValue={CurrentProduct?.size}><Input required placeholder="Enter product's size" /></Form.Item>
-            <Form.Item  className={styles.input} name='color' initialValue={CurrentProduct?.color}><Input required placeholder="Enter product's color"  /></Form.Item>
-            <Form.Item className={styles.textarea} name='description_Uz' initialValue={CurrentProduct?.description_Uz}><TextArea required placeholder="Enter product's description in uzbek" /></Form.Item>
-            <Form.Item  className={styles.textarea} name='description_Ru' initialValue={CurrentProduct?.description_Ru} ><TextArea required placeholder="Enter product's description in russian" /></Form.Item>
-            <Form.Item  className={styles.textarea} name='description_En' initialValue={CurrentProduct?.description_En}><TextArea required placeholder="Enter product's description in english" /></Form.Item>
+            <Form.Item label={"Uz-" + t("Others.Name")} className={styles.input} name='name_Uz' initialValue={CurrentProduct?.name_Uz}><Input required placeholder="Enter product's title in uzbek" /></Form.Item>
+            <Form.Item label={"Ru-" + t("Others.Name")} className={styles.input} name='name_Ru' initialValue={CurrentProduct?.name_Ru}><Input required placeholder="Enter product's title in russian" /></Form.Item>
+            <Form.Item label={"En-" + t("Others.Name")} className={styles.input} name='name_En' initialValue={CurrentProduct?.name_En}><Input required placeholder="Enter product's title in english" /></Form.Item>
+            <Form.Item label={t("Others.Price")} className={styles.input} name='price' initialValue={CurrentProduct?.price}><Input required placeholder="Enter product's price" /></Form.Item>
+            <Form.Item label={t("Others.Size")} className={styles.input} name='size' initialValue={CurrentProduct?.size}><Input required placeholder="Enter product's size" /></Form.Item>
+            <Form.Item label={t("Others.Color")} className={styles.input} name='color' initialValue={CurrentProduct?.color}><Input required placeholder="Enter product's color"  /></Form.Item>
+            <Form.Item label={"Uz-" + t("Others.Description")} className={styles.textarea} name='description_Uz' initialValue={CurrentProduct?.description_Uz}><TextArea required placeholder="Enter product's description in uzbek" /></Form.Item>
+            <Form.Item label={"Ru-" + t("Others.Description")} className={styles.textarea} name='description_Ru' initialValue={CurrentProduct?.description_Ru} ><TextArea required placeholder="Enter product's description in russian" /></Form.Item>
+            <Form.Item label={"En-" + t("Others.Description")} className={styles.textarea} name='description_En' initialValue={CurrentProduct?.description_En}><TextArea required placeholder="Enter product's description in english" /></Form.Item>
             
             <Form.Item 
               name="categoryId"
               className={styles.select}
-              required
               initialValue={CurrentProduct?.categoryId}
+              label={t("Others.Category")}
             >
               <Select
                 showSearch
@@ -202,15 +202,20 @@ function Modal_Outlet({type}) {
               <Upload
                 action="http://3.19.30.204/upload/upload"
                 listType="picture-card"
-                fileList={fileList}
+                fileList={[{
+                  uid: "-1",
+                  name: "image.png",
+                  status: "done",
+                  url: `http://3.19.30.204/upload/` + type == "category" ? CurrentCategory?.photo?.path : CurrentProduct?.photo?.path
+                }]}
                 onChange={onChange}
                 onPreview={onPreview}
                 name="photo"
+                
               >
                 {fileList.length < 1 && '+ Upload'}
               </Upload>
             </ImgCrop>
-            <Form.Item required className={styles.textarea} name="image_url"><Input placeholder='url for image' /></Form.Item>
             <Button htmlType='submit' type='primary'>{action == "add" ? t("Button.Add") : t("Button.Update")}</Button>
           </Form>
         </div>
@@ -234,6 +239,7 @@ function Modal_Outlet({type}) {
                 onChange={onChange}
                 onPreview={onPreview}
                 name="photo"
+                defaultFileList={[CurrentCategory?.photo?.path]}
               >
                 {fileList.length < 1 && '+ Upload'}
               </Upload>

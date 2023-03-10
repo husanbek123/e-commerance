@@ -37,6 +37,8 @@
     "Phone": "Telefon",
     "Status": "Holat",
     "Change": "O'zgartirish",
-    "Title": "Sarlavha"
+    "Title": "Sarlavha",
+    "Color": "Rangi",
+    "Description": "Tavsif"
   }
 }

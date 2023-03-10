@@ -33,10 +33,12 @@
         "Number of products": "Number of products",
         "Number": "Number",
         "Update Info": "Update Info",
-        "Email": "Email",
+        "Email": "Email",   
         "Phone": "Phone",
         "Status": "Status",
         "Change": "Change",
-        "Title": "Title"
+        "Title": "Title",
+        "Color": "Color",
+        "Description": "Description"
     }
 }
