@@ -1,3 +1,4 @@
+
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import useGetData, {
@@ -56,6 +57,7 @@ function ControlPage() {
     setPhones([])
     handleCancel()
     UpdateData.mutate(
+      e,
       {
         ...e,
         phone: e.phone != undefined ? e.phone : []
@@ -66,6 +68,7 @@ function ControlPage() {
       }
     );
   };
+
 
   function Remove(id) {
     let Arr = [...phones]
@@ -80,6 +83,7 @@ function ControlPage() {
     ...data?.data[0],
     null: "???"
   }
+
 
   return (
     <>
@@ -113,6 +117,7 @@ function ControlPage() {
       </div>
       <div>
         <br />
+
         <ul className="column">
           <div className={cl.wrapper}>
             <li className={cl.wrapper__li}> Email: {Newdata?.email ? Newdata.email : Newdata.null}</li>
@@ -132,6 +137,7 @@ function ControlPage() {
             )
           }
         </ul>
+
       </div>
       <Modal
         open={isModalOpen}
@@ -155,6 +161,8 @@ function ControlPage() {
                 id: Math.round(Math.random() * 1000)
               }])
             }}>Add phone</Button>
+
+
             <br />
             <br />
             {
@@ -189,6 +197,7 @@ function ControlPage() {
             </Form.Item>
             <Form.Item label="address" name="address" initialValue={data?.data[0]?.address}>
               <Input required placeholder="address kirting"></Input>
+
             </Form.Item>
             
           </div>

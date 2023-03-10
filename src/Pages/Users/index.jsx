@@ -1,3 +1,4 @@
+
 import React from 'react'
 import styles from './index.module.scss'
 import MyTable from '../../Components/Table'
@@ -16,7 +17,7 @@ function AllUsers() {
       <br />
       <MyTable data={data ? data?.data : []} />
     </div>
-  )
+  );
 }
 
-export default AllUsers
+export default AllUsers;
