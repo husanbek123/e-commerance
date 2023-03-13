@@ -1,3 +1,4 @@
+
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import useGetData, {
@@ -56,7 +57,6 @@ function ControlPage() {
     console.log(e, "111111111111111111111");
     setPhones([])
     handleCancel()
-
     console.log(data);
 
     if(data?.data.length == 0) {
@@ -81,6 +81,7 @@ function ControlPage() {
     }
   };
 
+
   function Remove(id) {
     let Arr = [...phones]
     let Slice = Arr.splice(id, 1)
@@ -96,6 +97,7 @@ function ControlPage() {
     ...data?.data[0],
     null: "???"
   }
+
 
   return (
     <>
@@ -129,6 +131,7 @@ function ControlPage() {
       </div>
       <div>
         <br />
+
         <ul className="column">
           <div className={cl.wrapper}>
             <li className={cl.wrapper__li}> Email: {Newdata?.email ? Newdata.email : Newdata.null}</li>
@@ -148,6 +151,7 @@ function ControlPage() {
             )
           }
         </ul>
+
       </div>
       <Modal
         open={isModalOpen}
@@ -171,6 +175,8 @@ function ControlPage() {
                 id: Math.round(Math.random() * 1000)
               }])
             }}>Add phone</Button>
+
+
             <br />
             <br />
             {
@@ -205,6 +211,7 @@ function ControlPage() {
             </Form.Item>
             <Form.Item label="address" name="address" initialValue={data?.data[0]?.address}>
               <Input required placeholder="address kirting"></Input>
+
             </Form.Item>
             
           </div>

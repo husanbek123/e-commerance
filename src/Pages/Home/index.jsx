@@ -1,3 +1,4 @@
+
 import axios from 'axios'
 import React, { useState } from 'react'
 import useGetData, { useDeleteData, usePostData} from '../../Api/Queries'
@@ -69,5 +70,4 @@ function Home() {
   );  
 }
 
-export default Home
-
+export default Home;
