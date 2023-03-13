@@ -19,7 +19,8 @@
     "Delete": "Удалить",
     "Add new Category": "Добавить новую категорию",
     "Add Product": "Добавить продукт",
-    "Update Info": "Обновить данные"
+    "Update Info": "Обновить данные",
+    "Submit": "Отправить"
   },
   "Others": {
     "All": "Все",
@@ -39,6 +40,7 @@
     "Change": "Изменять",
     "Title": "Заголовок",
     "Color": "Цвет",
-    "Description": "Описание"
+    "Description": "Описание",
+    "Discount": "Цена со скидкой"
   }
 }

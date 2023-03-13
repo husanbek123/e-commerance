@@ -1,16 +1,29 @@
 .layout {
   display: flex;
   min-height: 100vh;
+  * {
+    font-family: inherit !important;
+    i { 
+      font-family: "Font Awesome 6 Free" !important; 
+    }
+  }
 }
+.btnsDisabled {
+  button {
+    display: none;
+  }
 
+  section {
+    visibility: hidden;
+    transition: all 0.1s;
+    display: none;
+  }
+}
 .left_side {
   width: 20vw;
   height: 100vh;
-  position: relative;
 }
-
 .right_side {
   padding: 20px 30px 20px; 
   width: 80vw;
 }
-

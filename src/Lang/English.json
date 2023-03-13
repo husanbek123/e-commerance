@@ -19,7 +19,8 @@
         "Delete": "Delete",
         "Add new Category": "Add new Category",
         "Add Product": "Add Product",
-        "Update Info": "Update Info"
+        "Update Info": "Update Info",
+        "Submit": "Submit"
     },
     "Others": {
         "All": "All",
@@ -39,6 +40,7 @@
         "Change": "Change",
         "Title": "Title",
         "Color": "Color",
-        "Description": "Description"
+        "Description": "Description",
+        "Discount": "Discount price"
     }
 }

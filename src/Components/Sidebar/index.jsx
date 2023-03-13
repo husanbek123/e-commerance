@@ -1,15 +1,18 @@
-import { Form, Select } from 'antd'
-import React from 'react'
+import { Button, Form, Select } from 'antd'
+import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import useMyStore from '../../Context'
 import styles from './index.module.scss'
 import i18next from 'i18next'
 import { useTranslation } from 'react-i18next'
+import NoteSettings from '../NoteSettings'
 
-function Sidebar() {
+function Sidebar({isSettings, setIsSettings}) {
 
-  let {currentLang, setCurrentLang} = useMyStore((state) => state)
+  let {currentLang, setCurrentLang, user} = useMyStore((state) => state)
+
   let { t } = useTranslation()
+  
   function Switch(e) {
     setCurrentLang(e)
     i18next.changeLanguage(e)
@@ -19,6 +22,7 @@ function Sidebar() {
 
   return (
     <div className={styles.sidebar}>
+      <h3>{user?.name}</h3>
       <ul>
         <li><NavLink to="/">{t("Pages.Home")}</NavLink></li>
         <li><NavLink to="/users">{t("Pages.Users")}</NavLink></li>
@@ -47,6 +51,11 @@ function Sidebar() {
           />
         </Form.Item>
       </Form>
+      <Button onClick={() => setIsSettings(true)} type='primary'><i class="fa-solid fa-gear"></i></Button> 
+      {
+        isSettings && <NoteSettings isOpen={isSettings} setIsOpen={setIsSettings} />
+      }
+
     </div>
   )
 }
