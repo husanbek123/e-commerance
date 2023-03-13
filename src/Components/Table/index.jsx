@@ -6,7 +6,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import Warning from "../Warning";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
-
+import styles from './index.module.scss' 
  
 
 function MyTable({ data, type }) {
@@ -154,11 +154,11 @@ function MyTable({ data, type }) {
         number: products?.data?.filter((e) => e.categoryId == item.id).length,
         action: (
           <div>
-            <Warning onOk={()=> Delete(item?.id)} text="Delete" color="red" />
+            <Warning onOk={()=> Delete(item?.id)} text={t("Button.Delete")} color="red" />
             <a> </a>
             <Button style={{
               backgroundColor: "green"
-            }} type="primary" onClick={() => Update(item?.id)}>Update</Button>
+            }} type="primary" onClick={() => Update(item?.id)}>{t("Button.Update")}</Button>
           </div>
         ),
       });
@@ -239,8 +239,9 @@ function MyTable({ data, type }) {
   }
 
   return (
-    <div>
+    <section className="table-container">
       <Table
+        className={styles.table}
         bordered
         columns={columns}
         expandable={{
@@ -251,7 +252,7 @@ function MyTable({ data, type }) {
         }}
         dataSource={myData}
       />
-    </div>
+    </section>
   );
 }
 export default MyTable;

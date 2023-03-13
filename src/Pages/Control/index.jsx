@@ -39,6 +39,7 @@ function ControlPage() {
   const InfoData = usePostData("/information/");
   const UpdateData = useUpdateData("/information/" + data?.data[0]?.id);
   let DeleteData = useDeleteData()
+  let Post = usePostData("/information")
 
   let CurrentPhones = data?.data[0]?.phone?.map((item, index) => ({
     value: item,
@@ -55,16 +56,29 @@ function ControlPage() {
     console.log(e, "111111111111111111111");
     setPhones([])
     handleCancel()
-    UpdateData.mutate(
-      {
+
+    console.log(data);
+
+    if(data?.data.length == 0) {
+      console.log("@@@@@@@@@@@@@@");
+      Post.mutate({
         ...e,
-        phone: e.phone != undefined ? e.phone : []
-      },
-      {
+      },{
         onSuccess: () => queryClient.invalidateQueries(["information"]),
-        onError: (eror) => console.log(eror, "errr"),
-      }
-    );
+      })
+    }
+    else {
+      UpdateData.mutate(
+        {
+          ...e,
+          phone: e.phone != undefined ? e.phone : []
+        },
+        {
+          onSuccess: () => queryClient.invalidateQueries(["information"]),
+          onError: (eror) => console.log(eror, "errr"),
+        }
+      );
+    }
   };
 
   function Remove(id) {
@@ -74,7 +88,9 @@ function ControlPage() {
   }
 
   function Delete(id) {
-    DeleteData.mutate(`/information/${id}`)
+    DeleteData.mutate(`/information/${id}`, {
+      onSuccess: () => queryClient.invalidateQueries(["information"])
+    })
   }
   let Newdata = {
     ...data?.data[0],
@@ -145,7 +161,7 @@ function ControlPage() {
           <div>
             <Button onClick={() => {
               console.log(phones, "33333333333333333");
-              phones.length > 0 ? setPhones([...phones, {
+              phones?.length > 0 ? setPhones([...phones, {
                 value: null,
                 id: Math.round(Math.random() * 1000)
               }])
@@ -160,8 +176,8 @@ function ControlPage() {
             {
               phones?.map((item, index) => (
                 <div className="input">
-                  <Form.Item label={"Phone " + (index + 1)} name={["phone", index]}>
-                    <Input type="tel" required placeholder={item.value} defaultValue={item.value} ></Input>
+                  <Form.Item label={"Phone " + (index + 1)} name={["phone", index]} initialValue={item.value}>
+                    <Input type="tel" required placeholder={item.value} ></Input>
                   </Form.Item>
                   <Button 
                     type="primary" 
@@ -192,9 +208,11 @@ function ControlPage() {
             </Form.Item>
             
           </div>
-          <Button htmlType="submit" type="primary">
+          {
+            data?.data.length == 0 ? <Button htmlType="submit" type="primary">{t("Button.Add")}</Button> : <Button htmlType="submit" type="primary">
             {t("Button.Update")}
           </Button>
+          }
         </Form>
       </Modal>
     </>

@@ -19,7 +19,8 @@
     "Delete": "Oʻchirish",
     "Add new Category": "Yangi toifa qo'shish",
     "Add Product": "Mahsulot qo'shish",
-    "Update Info": "Ma'lumotni yangilash"
+    "Update Info": "Ma'lumotni yangilash",
+    "Submit": "Yuborish"
   },
   "Others": {
     "All": "Hammasi",
@@ -39,6 +40,8 @@
     "Change": "O'zgartirish",
     "Title": "Sarlavha",
     "Color": "Rangi",
-    "Description": "Tavsif"
+    "Description": "Tavsif",
+    "Discount": "Chegirmali narx"
+
   }
 }

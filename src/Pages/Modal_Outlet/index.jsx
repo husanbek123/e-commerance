@@ -1,10 +1,10 @@
-import { Button, Form, Input, Select } from 'antd';
+import { Button, Form, Input, InputNumber, Select } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import styles from './index.module.scss'
 import useGetData, { useDeleteData, usePostData, useUpdateData } from '../../Api/Queries';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 
 import { Upload } from 'antd';
@@ -31,20 +31,36 @@ function Modal_Outlet({type}) {
   let Update = useUpdateData(`/products/${action}`)
   let UpdateCateg = useUpdateData(`/category/${action}`)
 
-  let CurrentProduct = products?.data?.find((e) => e.id == action)
+  // let CurrentProduct = products?.data?.find((e) => e.id == action)
+  let {data:CurrentProduct, isLoading} = useGetData(['product', action], `/products/${action}`)
+
   let CurrentCategory = categories?.data?.find((e) => e.id == action)
-
   let CurrentMessage = Messages?.data[id - 1]
-  console.log(CurrentMessage);
-
   let UpdateMessage = useUpdateData(`/message/${CurrentMessage?.id}`)
-
   const [fileList, setFileList] = useState([]);
 
+  useEffect(() => {
+    if(CurrentProduct?.photo?.path) {
+      setFileList((prev) => [{
+        uid: '-1',
+        name: 'image.png',
+        status: 'done',
+        url: `http://3.19.30.204/upload/${CurrentProduct?.photo?.path}`,
+      }])
+    }
+  }, [CurrentProduct])
+
+
   const onChange = ({ fileList: newFileList, file }) => {
-    console.log(file);
+    console.log(file?.response?.id, "111111111111  ");
     setFileList(newFileList);
     setPhotoId(file?.response?.id)
+
+    // if(file?.response?.id) {
+    //   usePostData('/upload', {
+
+    //   })
+    // }
   };
   const onPreview = async (file) => {
     let src = file.url;
@@ -75,7 +91,17 @@ function Modal_Outlet({type}) {
   }
 
   function Submit(values) {
-    console.log(values);
+    console.log({
+      ...values,
+      "id": "",
+      "price": Number(values.price),
+      "gender": "BOTH",
+      "active": true,
+      "type": "string",
+      "photoId": photoId?.toString(),
+      "discount": values.discount
+    });
+
     if(type == "products") {
       if(action == "add") {
         Post.mutate({
@@ -85,8 +111,8 @@ function Modal_Outlet({type}) {
           "gender": "BOTH",
           "active": true,
           "type": "string",
-          "photoId": photoId.toString(),
-          "discount": 0
+          "photoId": photoId?.toString(),
+          "discount": values.discount
         }, {  
           onSuccess: () => {
             Success()
@@ -97,6 +123,7 @@ function Modal_Outlet({type}) {
       }
       else {
         Update.mutate({
+          ...values,
           "color": values.color,
           "active": true,
           "price": Number(values.price),
@@ -107,9 +134,9 @@ function Modal_Outlet({type}) {
           "description_Uz": values.description_Uz,
           "description_Ru": values.description_Ru,
           "description_En": values.description_En,
-          "image_Url": values.image_url
+          "photoId":  photoId?.toString(),
         }, {
-          
+
           onSuccess: () => {
             Success()
             navigate(-1)
@@ -161,7 +188,10 @@ function Modal_Outlet({type}) {
     }
   }
 
-  if(type == "products") {
+  if(isLoading) {
+    return "Loading....."
+  }
+  else if(type == "products") {
     return (
       <>
         <div className={styles.closeArea} onClick={() => navigate(-1)}></div>
@@ -170,7 +200,8 @@ function Modal_Outlet({type}) {
             <Form.Item label={"Uz-" + t("Others.Name")} className={styles.input} name='name_Uz' initialValue={CurrentProduct?.name_Uz}><Input required placeholder="Enter product's title in uzbek" /></Form.Item>
             <Form.Item label={"Ru-" + t("Others.Name")} className={styles.input} name='name_Ru' initialValue={CurrentProduct?.name_Ru}><Input required placeholder="Enter product's title in russian" /></Form.Item>
             <Form.Item label={"En-" + t("Others.Name")} className={styles.input} name='name_En' initialValue={CurrentProduct?.name_En}><Input required placeholder="Enter product's title in english" /></Form.Item>
-            <Form.Item label={t("Others.Price")} className={styles.input} name='price' initialValue={CurrentProduct?.price}><Input required placeholder="Enter product's price" /></Form.Item>
+            <Form.Item label={t("Others.Price")+` (${t("Others.Number").toLowerCase()})`} className={styles.input} name='price' initialValue={CurrentProduct?.price ?? 1}><InputNumber min={1} required placeholder="Enter product's price" /></Form.Item>
+            <Form.Item label={t("Others.Discount")+` (${t("Others.Number").toLowerCase()})`} className={styles.input} name='discount' initialValue={CurrentProduct?.discount}><Input required placeholder="Enter product's discount price" /></Form.Item>
             <Form.Item label={t("Others.Size")} className={styles.input} name='size' initialValue={CurrentProduct?.size}><Input required placeholder="Enter product's size" /></Form.Item>
             <Form.Item label={t("Others.Color")} className={styles.input} name='color' initialValue={CurrentProduct?.color}><Input required placeholder="Enter product's color"  /></Form.Item>
             <Form.Item label={"Uz-" + t("Others.Description")} className={styles.textarea} name='description_Uz' initialValue={CurrentProduct?.description_Uz}><TextArea required placeholder="Enter product's description in uzbek" /></Form.Item>
@@ -202,16 +233,10 @@ function Modal_Outlet({type}) {
               <Upload
                 action="http://3.19.30.204/upload/upload"
                 listType="picture-card"
-                fileList={[{
-                  uid: "-1",
-                  name: "image.png",
-                  status: "done",
-                  url: `http://3.19.30.204/upload/` + type == "category" ? CurrentCategory?.photo?.path : CurrentProduct?.photo?.path
-                }]}
+                fileList={fileList}
                 onChange={onChange}
                 onPreview={onPreview}
                 name="photo"
-                
               >
                 {fileList.length < 1 && '+ Upload'}
               </Upload>

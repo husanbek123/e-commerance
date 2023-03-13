@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Manrope', sans-serif;
+  // font-family: 'Manrope', sans-serif;
 
   ul, a {
     color: inherit;
@@ -54,6 +54,13 @@ html {
   justify-content: center;
 }
 
+.buttonIndex {
+  position: relative;
+  z-index: 1;
+  button {
+    z-index: 1;
+  }
+}
 
 // .modal {
 //   transition: all 1s;
@@ -68,4 +75,38 @@ html {
 .just_row {
   display: flex;
   align-items: center;
+}
+
+.table-container {
+  z-index: -1;
+}
+
+.form {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  z-index: 100;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  row-gap: 10px;
+
+  .form_in {
+    width: 40%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+  }
+  .toggle-Lang {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    
+  }
 }

@@ -18,6 +18,9 @@ import uzbek from './Lang/Uzbek.json'
 import english from './Lang/English.json'
 import russian from './Lang/Russian.json'
 import useMyStore from "./Context";
+import Login from "./Pages/Login";
+import Register from "./Pages/Register";
+import ProtectedRoute from "./Utils/ProtectedRoute";
 
 
 function App() {
@@ -38,7 +41,7 @@ function App() {
       <Layout>
         <ToastContainer position="top-right" />
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<ProtectedRoute ><Home /></ProtectedRoute>} />
           <Route path="/users" element={<AllUsers />} />
           <Route path="/products" element={<Products />}>
             <Route path=":action" element={<Modal_Outlet type="products" />} />
@@ -53,6 +56,8 @@ function App() {
           <Route path="/messages" element={<Messages />} >
             <Route path=":id" element={<Modal_Outlet type="message" />} />
           </Route>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </Layout>
     </div>

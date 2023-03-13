@@ -1,0 +1,17 @@
+.note {
+    font-family: inherit;
+    padding: 10px;
+    border: 1px;
+    border-radius: 4px;
+    border: 1px solid black;
+
+    .header {
+        font-family: inherit;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        i {
+            cursor: pointer;
+        }
+    }
+}
