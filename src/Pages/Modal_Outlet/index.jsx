@@ -33,34 +33,38 @@ function Modal_Outlet({type}) {
 
   // let CurrentProduct = products?.data?.find((e) => e.id == action)
   let {data:CurrentProduct, isLoading} = useGetData(['product', action], `/products/${action}`)
+  console.log(categories);
 
   let CurrentCategory = categories?.data?.find((e) => e.id == action)
   let CurrentMessage = Messages?.data[id - 1]
   let UpdateMessage = useUpdateData(`/message/${CurrentMessage?.id}`)
+ 
   const [fileList, setFileList] = useState([]);
 
   useEffect(() => {
     if(CurrentProduct?.photo?.path) {
-      setFileList((prev) => [{
+      setFileList([{
         uid: '-1',
         name: 'image.png',
         status: 'done',
-        url: `http://3.19.30.204/upload/${CurrentProduct?.photo?.path}`,
+        url: `http://3.19.30.204/upload/${type == "products" ? CurrentProduct?.photo?.path : CurrentCategory?.photo?.path}`,
       }])
     }
-  }, [CurrentProduct])
+    else if(CurrentCategory?.photo?.path) {
+      setFileList([{
+        uid: '-1',
+        name: 'image.png',
+        status: 'done',
+        url: `http://3.19.30.204/upload/${type == "products" ? CurrentProduct?.photo?.path : CurrentCategory?.photo?.path}`,
+      }])
+    }
+  }, [CurrentProduct, CurrentCategory])
 
 
   const onChange = ({ fileList: newFileList, file }) => {
     console.log(file?.response?.id, "111111111111  ");
     setFileList(newFileList);
     setPhotoId(file?.response?.id)
-
-    // if(file?.response?.id) {
-    //   usePostData('/upload', {
-
-    //   })
-    // }
   };
   const onPreview = async (file) => {
     let src = file.url;
@@ -151,7 +155,7 @@ function Modal_Outlet({type}) {
           "name_Uz": values.name_Uz,
           "name_Ru": values.name_Ru,
           "name_En": values.name_En,
-          "photoId": photoId
+          "photoId": photoId?.toString()
         }, {
           onSuccess: () => {
             Success()
@@ -165,7 +169,7 @@ function Modal_Outlet({type}) {
           "name_Uz": values.name_Uz,
           "name_Ru": values.name_Ru,
           "name_En": values.name_En,
-          "photoId": "d56be775-280e-4ed2-9417-c962cfc35a92"
+          "photoId": photoId?.toString()
         }, {
           onSuccess: () => {
             Success()
@@ -264,7 +268,6 @@ function Modal_Outlet({type}) {
                 onChange={onChange}
                 onPreview={onPreview}
                 name="photo"
-                defaultFileList={[CurrentCategory?.photo?.path]}
               >
                 {fileList.length < 1 && '+ Upload'}
               </Upload>

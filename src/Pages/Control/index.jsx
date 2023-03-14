@@ -175,8 +175,6 @@ function ControlPage() {
                 id: Math.round(Math.random() * 1000)
               }])
             }}>Add phone</Button>
-
-
             <br />
             <br />
             {
