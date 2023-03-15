@@ -7,29 +7,34 @@ import { useGetUser, usePostAuth } from '../../Api/Queries';
 import useMyStore from '../../Context';
 import styles from './index.module.scss'
 
+
 function Login() {
     let navigate = useNavigate()
     let {t} = useTranslation()
-    let {setCurrentLang, currentLang, setToken, setIsAdminLoggedIn, setUser} = useMyStore((state) => state)
+    let {setCurrentLang, currentLang, setToken, setIsAdminLoggedIn, isAdminLoggedIn, setUser} = useMyStore((state) => state)
     let post = usePostAuth("/auth/signin")
     let {data, isLoading} = useGetUser(["user"], '/user/me')
 
+    console.log(isAdminLoggedIn);
+
     function login(values) {
-        console.log(values);
+        // console.log(values);
         if(!isLoading) {
             setUser(data)
-            navigate("/")
+            // navigate("/")
         }
-        // post.mutate({
-        //     ...values
-        // }, {
-        //     onSuccess: (data) => {
-        //         console.log(data);
-        //         setIsAdminLoggedIn(true)
-        //         setToken(data?.data?.access_token)
-        //         navigate("/")
-        //     }
-        // })
+        post.mutate({
+            ...values
+        }, {
+            onSuccess: (data) => {
+                setIsAdminLoggedIn(true)
+                // setToken(data?.data?.access_token)
+                navigate('/')
+            },
+            onError: (data) => {
+                console.log("Error");
+            }
+        })
     }
 
     function Switch(e) {

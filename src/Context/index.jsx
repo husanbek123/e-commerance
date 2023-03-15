@@ -33,7 +33,7 @@ let NewStore = (set, get) => ({
     setToken: (token) => set({
         token: token
     }),
-    setUser: (user) => set({
+    setUser: (user) => set({    
         user: user
     })
 

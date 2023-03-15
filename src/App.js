@@ -41,7 +41,7 @@ function App() {
       <Layout>
         <ToastContainer position="top-right" />
         <Routes>
-          <Route path="/" element={<ProtectedRoute ><Home /></ProtectedRoute>} />
+          <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
           <Route path="/users" element={<AllUsers />} />
           <Route path="/products" element={<Products />}>
             <Route path=":action" element={<Modal_Outlet type="products" />} />

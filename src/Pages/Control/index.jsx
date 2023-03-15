@@ -52,6 +52,8 @@ function ControlPage() {
     }
   }, [data])
 
+  
+
 
   const OnSubmit = (e) => {
     console.log(e, "111111111111111111111");
@@ -146,9 +148,9 @@ function ControlPage() {
             }
           </div>
           {
-            data?.data.length != 0 && parse(
-              toString(data?.data[0]?.addressMap)
-            )
+            !isLoading ? parse(
+              Newdata.addressMap
+            ) : "Loading"
           }
         </ul>
 
